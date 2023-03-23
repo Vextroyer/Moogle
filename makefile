@@ -4,4 +4,4 @@ build:
 
 .PHONY: dev
 dev:
-	dotnet watch run --project MoogleServer
+	dotnet run --project MoogleServer
