@@ -34,7 +34,32 @@ public class Cargador{
         for(int j=0;j<textoFormateado.Length;++j)textoFormateado[j] = ' ';//Inicialmente esta compuesto por espacios en blanco
         for(int i = 0,j = 0;i<texto.Length;++i){
            if(char.IsLetterOrDigit(texto[i]) || char.IsWhiteSpace(texto[i])){
-                textoFormateado[j] = texto[i];
+                //Reemplazar vocales con tilde por vocales simples
+                switch(texto[i]){
+                    case 'á':
+                        textoFormateado[j] = 'a';
+                        break;
+            
+                    case 'é':
+                        textoFormateado[j] = 'e';
+                        break;
+            
+                    case 'í':
+                        textoFormateado[j] = 'i';
+                        break;
+            
+                    case 'ó':
+                        textoFormateado[j] = 'o';
+                        break;
+            
+                    case 'ú':
+                        textoFormateado[j] = 'u';
+                        break;
+            
+                    default:
+                        textoFormateado[j] = texto[i];
+                        break;
+                }
                 ++j;
            }
         }
