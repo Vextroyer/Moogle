@@ -11,16 +11,33 @@ public class Cargador{
         //De la carpeta Content :
 
         string[] archivos = Directory.EnumerateFiles(contentDir).ToArray();//Identifica todos los archivos
+        //Si no hay archivos, excepcion
+        if(archivos.Length == 0)throw new Exception("No existen documentos que cargar, por favor anada documentos a la base de datos y ejecute nuevamente el programa.");
 
-        
-        Documento[] documentos = new Documento[archivos.Length];//Crea tantos documentos como archivos
+        Documento[] documentos1 = new Documento[archivos.Length];//Crea tantos documentos como archivos
 
         //Hazle corresponder a cada documento un archivo
-        for(int i=0;i<documentos.Length;++i){
-            documentos[i] = new Documento(ObtenElContenido(archivos[i]),ObtenElTitulo(archivos[i]));
+        int cntDocumentosVacios = 0;//Puede suceder que despues de procesado, un documento no tenga informacion util y por tanto este vacio
+        for(int i=0;i<documentos1.Length;++i){
+            string[] contenido = ObtenElContenido(archivos[i]);
+            if(contenido.Length > 0)
+                documentos1[i] = new Documento(ObtenElContenido(archivos[i]),ObtenElTitulo(archivos[i]));
+            else
+                ++cntDocumentosVacios;
+        }
+        
+        //Si no hay documentos no vacios
+        if(documentos1.Length - cntDocumentosVacios == 0)throw new Exception("No existe informacion relevante en la base de datos de documentos, por favor actualicela");
+
+        //Documentos no vacios
+        Documento[] documentos2 = new Documento[documentos1.Length - cntDocumentosVacios];
+        for(int i=0,j = 0;i<documentos1.Length && j < documentos2.Length;++i){
+            if(documentos1[i] == null)continue;
+            documentos2[j] = documentos1[i];
+            ++j;
         }
 
-        return documentos;
+        return documentos2;
     }
 
     //Procesa y devuelve un listado de los terminos del archivo
