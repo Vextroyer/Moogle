@@ -16,6 +16,12 @@ public class Documento{
         private set;
     }
 
+    //De todos los terminos del documento guarda la frecuencia bruta del de mayor frecuencia bruta, auxiliar para calcular la frecuencia normalizada 
+    public int MostFrequentCount{
+        get;
+        private set;
+    }
+
     //Este diccionario representa el contenido del documento agrupado de la forma (termino, cantidad de repeticiones)
     private Dictionary<string,int> _contenido;
 
@@ -24,12 +30,18 @@ public class Documento{
 
         this._contenido = new Dictionary<string, int>();
 
+        this.cntTerminos = 0;
+
+        this.MostFrequentCount = 0;
+
         foreach(string t in terminos){
             this.cntTerminos ++;
             if(!this._contenido.ContainsKey(t))
                 this._contenido.Add(t,1);
             else
                 ++this._contenido[t];
+            
+            MostFrequentCount = Math.Max(MostFrequentCount,this._contenido[t]);
         }
     }
 
