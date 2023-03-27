@@ -12,13 +12,39 @@ public static class Moogle
         //Crea un resultado por cada documento
         SearchItem[] items = new SearchItem[documentos.Length];
         for(int i=0;i<items.Length;++i){
-            items[i] = new SearchItem(documentos[i].Titulo,documentos[i].Titulo,FrecuenciaNormalizada(query,documentos[i]));
+            float score = FrecuenciaNormalizada(query,documentos[i]);
+            items[i] = new SearchItem(documentos[i].Titulo,documentos[i].Titulo + " " + score,score);
         }
 
-        //Ordenar
+        //Ordena los documentos basados en su score descendentemente
         Ordenar(items);
 
+        //No muestres resultados irrelevantes en la busqueda
+        items = Depurar(items);
+
         return new SearchResult(items, query);
+    }
+
+    //Elimina resultados irrelevantes al usuario, que tienen poca o ninguna relacion con su busqueda
+    private static SearchItem[] Depurar(SearchItem[] items){
+        //Determina la cantidad de elementos irrelevantes
+        int cntIrrelevantes = 0;
+        for(int i =0;i<items.Length;++i){
+            if(EsIrrelevante(items[i].Score))++cntIrrelevantes;
+        }
+
+        SearchItem[] auxItems = new SearchItem[items.Length - cntIrrelevantes];
+        for(int i=0,j =0;i<items.Length && j < auxItems.Length;++i){
+            if(EsIrrelevante(items[i].Score))continue;
+            auxItems[j] = items[i];
+            ++j;
+        }
+
+        return auxItems;
+    }
+    //Metodo auxiliar para determinar si un resultado es relevante basado en su score
+    private static bool EsIrrelevante(float score){
+        return score == 0;
     }
 
     //Ordena los documentos descendentemente por valor de score utilizando el insertion sort
