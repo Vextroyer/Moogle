@@ -32,4 +32,10 @@ public class Documento{
                 ++this._contenido[t];
         }
     }
+
+    //Devueve la cantidad de veces que aparece un termino en un documento
+    public int FrecuenciaBruta(string termino){
+        if(this._contenido.ContainsKey(termino))return this._contenido[termino];
+        else return 0;
+    }
 }
