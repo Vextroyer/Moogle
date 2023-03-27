@@ -5,13 +5,7 @@ namespace MoogleEngine;
 *Lo represento como las diferentes palabras que lo componen y sus repeticiones
 **/
 public class Documento{
-    public string titulo{
-        get;
-        private set;
-    }
-    
-    //Cantidad total de terminos que aparecen en el documento
-    public int cntTerminos{
+    public string Titulo{
         get;
         private set;
     }
@@ -26,16 +20,13 @@ public class Documento{
     private Dictionary<string,int> _contenido;
 
     public Documento(string[] terminos, string nombre){
-        this.titulo = nombre;
+        this.Titulo = nombre;
 
         this._contenido = new Dictionary<string, int>();
 
-        this.cntTerminos = 0;
-
         this.MostFrequentCount = 0;
-
+        
         foreach(string t in terminos){
-            this.cntTerminos ++;
             if(!this._contenido.ContainsKey(t))
                 this._contenido.Add(t,1);
             else

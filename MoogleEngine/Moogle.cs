@@ -6,19 +6,12 @@ public static class Moogle
     public static SearchResult Query(string query) {
         // Modifique este método para responder a la búsqueda
 
-        /*
-        SearchItem[] items = new SearchItem[3] {
-            new SearchItem("Hello World", "Lorem ipsum dolor sit amet", 0.9f),
-            new SearchItem("Hello World", "Lorem ipsum dolor sit amet", 0.5f),
-            new SearchItem("Hello World", "Lorem ipsum dolor sit amet", 0.1f),
-        };*/
-
         Documento[] documentos = Cargador.Load();
 
         //Crea un resultado por cada documento
         SearchItem[] items = new SearchItem[documentos.Length];
         for(int i=0;i<items.Length;++i){
-            items[i] = new SearchItem(documentos[i].titulo,documentos[i].titulo + " " + documentos[i].FrecuenciaBruta(query),FrecuenciaNormalizada(query,documentos[i]));
+            items[i] = new SearchItem(documentos[i].Titulo,documentos[i].Titulo,FrecuenciaNormalizada(query,documentos[i]));
         }
 
         //Ordenamiento respecto al score
@@ -38,6 +31,7 @@ public static class Moogle
     public static float FrecuenciaNormalizada(string query,Documento d){
         float frecuenciaBruta = d.FrecuenciaBruta(query);
         float mayorFrecuenciaBruta = d.MostFrequentCount;
+        //mayorFrecuenciaBruta = 0 nunca sucedera, porque esto implica que existe un documento vacio y de suceder esto ya la clase Cargador se hubiese encargado de ignorarlo, o que no existen documentos en la coleccion, y la clase Cargador se encargara de lanzar una excepcion en dicho caso.
         return frecuenciaBruta / mayorFrecuenciaBruta;
     }
 }

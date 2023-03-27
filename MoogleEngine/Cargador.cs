@@ -1,6 +1,6 @@
 namespace MoogleEngine;
 /**
-*Se encarga de la entrada de informacion desde la carpeta Content y de distribuirla a las otras partes pertinentes del programa
+*Se encarga de la entrada de informacion desde la carpeta Content,su procesamiento y distribucion a las otras partes pertinentes del programa
 **/
 public class Cargador{
     private const string contentDir = "../Content";//Path del directorio donde estan los documentos
