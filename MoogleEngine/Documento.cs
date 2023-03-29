@@ -47,6 +47,12 @@ public class Documento{
     #endregion Constructores
 
     #region Metodos
+    //Determina si un termino aparece o no en el documento
+    public bool FrecuenciaBooleana(string query){
+        if(string.IsNullOrEmpty(query))return false;
+        return this._contenido.ContainsKey(query);//Este metodo no arrojara una excepcion pues esto solo sucede si el string es nulo, y en tal caso se hubiese ejecutado la linea de codigo anterior
+    }
+
     //Devueve la cantidad de veces que aparece un termino en un documento
     public int FrecuenciaBruta(string termino){
         if(this._contenido.ContainsKey(termino))return this._contenido[termino];
