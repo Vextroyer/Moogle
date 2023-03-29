@@ -11,8 +11,7 @@ public static class Moogle
         //Crea un resultado por cada documento
         SearchItem[] items = new SearchItem[documentos.Length];
         for(int i=0;i<items.Length;++i){
-            float score = documentos[i].FrecuenciaNormalizada(query);
-            items[i] = new SearchItem(documentos[i].Titulo,documentos[i].Titulo + " " + score,score);
+            items[i] = new SearchItem(documentos[i].Titulo,documentos[i].Titulo,Valorar(query,documentos[i]));
         }
 
         //Ordena los documentos basados en su score descendentemente
@@ -23,6 +22,26 @@ public static class Moogle
 
         return new SearchResult(items, query);
     }
+
+    //Metodo que determina el valor de un documento, relativo a la consulta
+    //Esta basado en el TF-IDF
+    public static float Valorar(string query,Documento d){
+        return d.FrecuenciaNormalizada(query);
+    }
+
+    #region Orenamiento
+    //Ordena los documentos descendentemente por valor de score utilizando el insertion sort
+    private static void Ordenar(SearchItem[] items){
+        for(int i=0;i<items.Length;++i){
+            for(int j=i;j>0 && items[j].Score > items[j - 1].Score;--j){
+                SearchItem c = new SearchItem(items[j]);
+                items[j] = items[j - 1];
+                items[j - 1] = c;
+            }
+        }
+    }
+    #endregion Ordenamiento
+
     #region Depuracion
     //Elimina resultados irrelevantes al usuario, que tienen poca o ninguna relacion con su busqueda
     private static SearchItem[] Depurar(SearchItem[] items){
@@ -46,17 +65,5 @@ public static class Moogle
         return score == 0;
     }
     #endregion Depuracion
-    
-    #region Orenamiento
-    //Ordena los documentos descendentemente por valor de score utilizando el insertion sort
-    private static void Ordenar(SearchItem[] items){
-        for(int i=0;i<items.Length;++i){
-            for(int j=i;j>0 && items[j].Score > items[j - 1].Score;--j){
-                SearchItem c = new SearchItem(items[j]);
-                items[j] = items[j - 1];
-                items[j - 1] = c;
-            }
-        }
-    }
-    #endregion Ordenamiento
+
 }
