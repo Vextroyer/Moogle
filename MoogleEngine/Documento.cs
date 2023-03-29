@@ -5,6 +5,14 @@ namespace MoogleEngine;
 *Lo represento como las diferentes palabras que lo componen y sus repeticiones
 **/
 public class Documento{
+
+    #region Miembros
+    //Este diccionario representa el contenido del documento agrupado de la forma (termino, cantidad de repeticiones)
+    private Dictionary<string,int> _contenido;
+
+    #endregion Miembros
+
+    #region Propiedades
     public string Titulo{
         get;
         private set;
@@ -16,9 +24,9 @@ public class Documento{
         private set;
     }
 
-    //Este diccionario representa el contenido del documento agrupado de la forma (termino, cantidad de repeticiones)
-    private Dictionary<string,int> _contenido;
+    #endregion Propiedades
 
+    #region Constructores
     public Documento(string[] terminos, string nombre){
         this.Titulo = nombre;
 
@@ -36,9 +44,21 @@ public class Documento{
         }
     }
 
+    #endregion Constructores
+
+    #region Metodos
     //Devueve la cantidad de veces que aparece un termino en un documento
     public int FrecuenciaBruta(string termino){
         if(this._contenido.ContainsKey(termino))return this._contenido[termino];
         else return 0;
     }
+
+    //Calcula la frecuencia normalizada del termino en el documento
+    public float FrecuenciaNormalizada(string query){
+        float frecuenciaBruta = this.FrecuenciaBruta(query);
+        float mayorFrecuenciaBruta = this.MostFrequentCount;
+        //mayorFrecuenciaBruta = 0 nunca sucedera, porque esto implica que existe un documento vacio y de suceder esto ya la clase Cargador se hubiese encargado de ignorarlo, o que no existen documentos en la coleccion, y la clase Cargador se encargara de lanzar una excepcion en dicho caso.
+        return frecuenciaBruta / mayorFrecuenciaBruta;
+    }
+    #endregion Metodos
 }
