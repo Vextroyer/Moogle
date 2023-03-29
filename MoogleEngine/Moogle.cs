@@ -4,12 +4,15 @@
 public static class Moogle
 {
     public static SearchResult Query(string query) {
+        //Procesar la consulta
+        string[] terminos = Procesar(query);
+        foreach(string s in terminos)System.Console.WriteLine(s);
 
         //Carga los documentos
         Documento[] documentos = Cargador.Load();
 
         //Determina el score de cada documento
-        double[] score = Valorar(query,documentos);
+        double[] score = Valorar(terminos,documentos);
 
         //Crea un resultado por cada documento
         SearchItem[] items = new SearchItem[documentos.Length];
@@ -25,19 +28,35 @@ public static class Moogle
 
         return new SearchResult(items, query);
     }
+    #region Procesar
+    private static string[] Procesar(string query){
+        query = query.ToLower();
+        string[] terminos = query.Split(" ",StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+        //Vocales
+        return terminos;
+    }
+    #endregion Procesar
+
     #region TF-IDF
     
     //Metodo que determina el valor de cada documento, relativo a la consulta
     //Esta basado en el TF-IDF
-    public static double[] Valorar(string query,Documento[] docs){
+    public static double[] Valorar(string[] terms,Documento[] docs){
         double[] score = new double[docs.Length];
 
-        //Halla la frecuencia inversa del termino
-        double idf = CalcularIdf(query,docs);
+        //Halla la frecuencia inversa de cada termino
+        double[] idf = new double[terms.Length];
+        for(int i=0;i<idf.Length;++i){
+            idf[i]=CalcularIdf(terms[i],docs);
+        }
         
         //Calcula el score de cada documento
         for(int i=0;i<docs.Length;++i){
-            score[i] = docs[i].FrecuenciaNormalizada(query) * idf;
+            //Es la combinacion del score individual de cada termino con respecto al documento
+            for(int j=0;j<idf.Length;++j){
+                score[i] += docs[i].FrecuenciaNormalizada(terms[j]) * idf[j];
+            }
+            
         }
 
         return score;
