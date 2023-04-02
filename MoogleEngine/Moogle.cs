@@ -21,7 +21,7 @@ public static class Moogle
         }
 
         //Ordena los documentos basados en su score descendentemente
-        Ordenar(items);
+        items = Sorter.Sort(items);
 
         //No muestres resultados irrelevantes en la busqueda
         items = Depurador.Depurar(items);
@@ -77,18 +77,4 @@ public static class Moogle
     }
 
     #endregion TF-IDF
-
-    #region Ordenamiento
-    //Ordena los documentos descendentemente por valor de score utilizando el insertion sort
-    private static void Ordenar(SearchItem[] items){
-        for(int i=0;i<items.Length;++i){
-            for(int j=i;j>0 && items[j].Score > items[j - 1].Score;--j){
-                SearchItem c = new SearchItem(items[j]);
-                items[j] = items[j - 1];
-                items[j - 1] = c;
-            }
-        }
-    }
-    #endregion Ordenamiento
-
 }
