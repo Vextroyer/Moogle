@@ -28,12 +28,12 @@ public static class Cargador{
         for(int i=0;i<documentos1.Length;++i){
             string[] contenido = ObtenElContenido(archivos[i]);
             if(contenido.Length > 0)
-                documentos1[i] = new Documento(ObtenElContenido(archivos[i]),ObtenElTitulo(archivos[i]));
+                documentos1[i] = new Documento(contenido,ObtenElTitulo(archivos[i]));
             else
                 ++cntDocumentosVacios;
         }
         
-        //Si no hay documentos no vacios
+        //Si no hay documentos no vacios, excepcion
         if(documentos1.Length - cntDocumentosVacios == 0)throw new Exception("No existe informacion relevante en la base de datos de documentos, por favor actualicela");
 
         //Documentos no vacios
