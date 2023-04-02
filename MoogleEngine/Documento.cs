@@ -43,6 +43,22 @@ public class Documento{
             MostFrequentCount = Math.Max(MostFrequentCount,this._contenido[t]);
         }
     }
+    //Crea este documento a partir de una copia de otro 
+    public Documento(Documento other){
+        this.Titulo = other.Titulo;
+        this.MostFrequentCount = other.MostFrequentCount;
+        this._contenido = other.CopiarContenido();
+    }
+
+    //Metodo auxiliar para devlover una copia del contenido
+    public Dictionary<string,int> CopiarContenido(){
+        //Copia cada entrada del diccionario
+        Dictionary<string,int> contenido = new Dictionary<string, int>();
+        foreach(var c in _contenido){
+            contenido.Add(c.Key,c.Value);
+        }
+        return contenido;
+    }
 
     #endregion Constructores
 

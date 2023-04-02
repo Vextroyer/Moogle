@@ -2,12 +2,19 @@ namespace MoogleEngine;
 /**
 *Se encarga de la entrada de informacion desde la carpeta Content,su procesamiento y distribucion a las otras partes pertinentes del programa
 **/
-public class Cargador{
+public static class Cargador{
+    private static Documento[] _documentos;//Contiene el corpus de Documentos. De esta forma solo es necesario cargarlos una sola vez.
     private const string contentDir = "../Content";//Path del directorio donde estan los documentos
 
     //Carga los archivos y devuelve documentos con informacion de cada archivo
     public static Documento[] Load(){
-        
+        //Si ya se cargaron los documentos, devuelve una copia
+        if(_documentos != null){
+            Documento[] documentos = new Documento[_documentos.Length];
+            for(int i=0;i<_documentos.Length;++i)documentos[i] = new Documento(_documentos[i]);
+            return documentos;
+        }
+
         //De la carpeta Content :
 
         string[] archivos = Directory.EnumerateFiles(contentDir).ToArray();//Identifica todos los archivos
@@ -36,6 +43,10 @@ public class Cargador{
             documentos2[j] = documentos1[i];
             ++j;
         }
+
+        //Guarda los documentos para una proxima busqueda
+        _documentos = new Documento[documentos2.Length];
+        for(int i=0;i<_documentos.Length;++i)_documentos[i] = new Documento(documentos2[i]);
 
         return documentos2;
     }
