@@ -24,7 +24,7 @@ public static class Moogle
         Ordenar(items);
 
         //No muestres resultados irrelevantes en la busqueda
-        items = Depurar(items);
+        items = Depurador.Depurar(items);
 
         return new SearchResult(items, query);
     }
@@ -78,7 +78,7 @@ public static class Moogle
 
     #endregion TF-IDF
 
-    #region Orenamiento
+    #region Ordenamiento
     //Ordena los documentos descendentemente por valor de score utilizando el insertion sort
     private static void Ordenar(SearchItem[] items){
         for(int i=0;i<items.Length;++i){
@@ -90,29 +90,5 @@ public static class Moogle
         }
     }
     #endregion Ordenamiento
-
-    #region Depuracion
-    //Elimina resultados irrelevantes al usuario, que tienen poca o ninguna relacion con su busqueda
-    private static SearchItem[] Depurar(SearchItem[] items){
-        //Determina la cantidad de elementos irrelevantes
-        int cntIrrelevantes = 0;
-        for(int i =0;i<items.Length;++i){
-            if(EsIrrelevante(items[i].Score))++cntIrrelevantes;
-        }
-
-        SearchItem[] auxItems = new SearchItem[items.Length - cntIrrelevantes];
-        for(int i=0,j =0;i<items.Length && j < auxItems.Length;++i){
-            if(EsIrrelevante(items[i].Score))continue;
-            auxItems[j] = items[i];
-            ++j;
-        }
-
-        return auxItems;
-    }
-    //Metodo auxiliar para determinar si un resultado es relevante basado en su score
-    private static bool EsIrrelevante(double score){
-        return score == 0;
-    }
-    #endregion Depuracion
 
 }
