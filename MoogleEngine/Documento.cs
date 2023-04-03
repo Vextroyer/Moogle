@@ -7,6 +7,7 @@ namespace MoogleEngine;
 public class Documento{
 
     #region Miembros
+    private const int SnippetLength = 20;//Cantidad maxima de terminos mostrados en el snippet
     private Dictionary<string,List<int>> _contenido;//Este diccionario representa el contenido del documento agrupado de la forma (termino, posiciones en las que aparece)
     private string[] _texto;//Este es el contenido textual del documento, palabra por palabra.
 
@@ -86,6 +87,30 @@ public class Documento{
         float mayorFrecuenciaBruta = this.MostFrequentCount;
         //mayorFrecuenciaBruta = 0 nunca sucedera, porque esto implica que existe un documento vacio y de suceder esto ya la clase Cargador se hubiese encargado de ignorarlo, o que no existen documentos en la coleccion, y la clase Cargador se encargara de lanzar una excepcion en dicho caso.
         return frecuenciaBruta / mayorFrecuenciaBruta;
+    }
+
+    //Metodo para generar un snippet a partir de una consulta
+    public string GetSnippet(string[] terminos){
+        string snippet = "";
+
+        //De la palabra
+        string query = terminos[0];
+
+        //Busca su primera aparicion
+        if(this.FrecuenciaBooleana(query)){
+            int pos = this._contenido[query].First();
+            System.Console.WriteLine($"{query} Aparece {this._contenido[query].Count} veces");
+            System.Console.WriteLine($"Su primera ocurrencia es {pos}");
+            System.Console.WriteLine($"Existen un total de {this._texto.Length} palabras");
+            
+            //Computa el snippet
+            for(int i = Math.Max(0,pos - SnippetLength / 2), snippetWords = 0;i < this._texto.Length && snippetWords < SnippetLength;++i,++snippetWords){
+                System.Console.WriteLine($"La palabra {i} tiene {this._texto[i].Length} letras");
+                snippet += this._texto[i] + " ";
+            }
+        }
+
+        return snippet;
     }
     #endregion Metodos
 }

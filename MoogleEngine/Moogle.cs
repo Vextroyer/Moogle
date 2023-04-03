@@ -18,7 +18,7 @@ public static class Moogle
         //Crea un resultado por cada documento
         SearchItem[] items = new SearchItem[documentos.Length];
         for(int i=0;i<items.Length;++i){
-            items[i] = new SearchItem(documentos[i].Titulo,documentos[i].Titulo + " " + score[i],score[i]);
+            items[i] = new SearchItem(documentos[i].Titulo,documentos[i].GetSnippet(terminos),score[i]);
         }
 
         //Ordena los documentos basados en su score descendentemente
