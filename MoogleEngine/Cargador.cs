@@ -10,9 +10,9 @@ public static class Cargador{
     public static Documento[] Load(){
         //Si ya se cargaron los documentos, devuelve una copia
         if(_documentos != null){
-            Documento[] documentos = new Documento[_documentos.Length];
-            for(int i=0;i<_documentos.Length;++i)documentos[i] = new Documento(_documentos[i]);
-            return documentos;
+            Documento[] documentosCopia = new Documento[_documentos.Length];
+            for(int i=0;i<_documentos.Length;++i)documentosCopia[i] = new Documento(_documentos[i]);
+            return documentosCopia;
         }
 
         //De la carpeta Content :
@@ -21,34 +21,35 @@ public static class Cargador{
         //Si no hay archivos, excepcion
         if(archivos.Length == 0)throw new Exception("No existen documentos que cargar, por favor anada documentos a la base de datos y ejecute nuevamente el programa.");
 
-        Documento[] documentos1 = new Documento[archivos.Length];//Crea tantos documentos como archivos
+        //Pueden haber documentos vacios
+        Documento[] documentos = new Documento[archivos.Length];//Crea tantos documentos como archivos
 
         //Hazle corresponder a cada documento un archivo
         int cntDocumentosVacios = 0;//Puede suceder que despues de procesado, un documento no tenga informacion util y por tanto este vacio
-        for(int i=0;i<documentos1.Length;++i){
+        for(int i=0;i<documentos.Length;++i){
             string[] contenido = ObtenElContenido(archivos[i]);
             if(contenido.Length > 0)
-                documentos1[i] = new Documento(contenido,ObtenElTitulo(archivos[i]));
+                documentos[i] = new Documento(contenido,ObtenElTitulo(archivos[i]));
             else
                 ++cntDocumentosVacios;
         }
         
         //Si no hay documentos no vacios, excepcion
-        if(documentos1.Length - cntDocumentosVacios == 0)throw new Exception("No existe informacion relevante en la base de datos de documentos, por favor actualicela");
+        if(documentos.Length - cntDocumentosVacios == 0)throw new Exception("No existe informacion relevante en la base de datos de documentos, por favor actualicela");
 
         //Documentos no vacios
-        Documento[] documentos2 = new Documento[documentos1.Length - cntDocumentosVacios];
-        for(int i=0,j = 0;i<documentos1.Length && j < documentos2.Length;++i){
-            if(documentos1[i] == null)continue;
-            documentos2[j] = documentos1[i];
+        Documento[] documentosValidos = new Documento[documentos.Length - cntDocumentosVacios];
+        for(int i=0,j = 0;i<documentos.Length && j < documentosValidos.Length;++i){
+            if(documentos[i] == null)continue;
+            documentosValidos[j] = documentos[i];
             ++j;
         }
 
         //Guarda los documentos para una proxima busqueda
-        _documentos = new Documento[documentos2.Length];
-        for(int i=0;i<_documentos.Length;++i)_documentos[i] = new Documento(documentos2[i]);
+        _documentos = new Documento[documentosValidos.Length];
+        for(int i=0;i<_documentos.Length;++i)_documentos[i] = new Documento(documentosValidos[i]);
 
-        return documentos2;
+        return documentosValidos;
     }
 
     //Procesa y devuelve un listado de los terminos del archivo
@@ -58,7 +59,7 @@ public static class Cargador{
         texto = texto.ReplaceLineEndings(" ");//Convierte los saltos de lineas en espacios en blanco
         texto = texto.ToLower();//Convierte todas las letras a minusculas
 
-        char[] textoFormateado = new char[texto.Length];//Texto temporal que contiene solo letras, numeros y espacios en blaco
+        char[] textoFormateado = new char[texto.Length];//Texto temporal que contiene solo letras, numeros y espacios en blanco
         for(int j=0;j<textoFormateado.Length;++j)textoFormateado[j] = ' ';//Inicialmente esta compuesto por espacios en blanco
         for(int i = 0,j = 0;i<texto.Length;++i){
            if(char.IsLetterOrDigit(texto[i]) || char.IsWhiteSpace(texto[i])){

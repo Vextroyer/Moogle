@@ -67,11 +67,11 @@ public static class Moogle
         //El idf es el logaritmo en alguna base de la cantidad total de documentos entre la cantidad de documentos que contienen el termino
 
         //Calcula cuantos documentos tienen el termino query
-        double cntDocumentosUtiles =  1.0;//Evita la division por 0
-        foreach(Documento d in docs)if(d.FrecuenciaBooleana(query))cntDocumentosUtiles += 1.0;
+        double cntDocumentosEnQueAparece =  1.0;//Evita la division por 0
+        foreach(Documento d in docs)if(d.FrecuenciaBooleana(query))cntDocumentosEnQueAparece += 1.0;
 
         //Calcula el idf
-        double idf = ((double)(docs.Length)) / cntDocumentosUtiles;
+        double idf = ((double)(docs.Length)) / cntDocumentosEnQueAparece;
         idf = Math.Log10(idf);
 
         return idf;

@@ -82,9 +82,9 @@ public class Documento{
     }
 
     //Calcula la frecuencia normalizada del termino en el documento
-    public float FrecuenciaNormalizada(string query){
-        float frecuenciaBruta = this.FrecuenciaBruta(query);
-        float mayorFrecuenciaBruta = this.MostFrequentCount;
+    public double FrecuenciaNormalizada(string query){
+        double frecuenciaBruta = this.FrecuenciaBruta(query);
+        double mayorFrecuenciaBruta = this.MostFrequentCount;
         //mayorFrecuenciaBruta = 0 nunca sucedera, porque esto implica que existe un documento vacio y de suceder esto ya la clase Cargador se hubiese encargado de ignorarlo, o que no existen documentos en la coleccion, y la clase Cargador se encargara de lanzar una excepcion en dicho caso.
         return frecuenciaBruta / mayorFrecuenciaBruta;
     }
@@ -98,14 +98,30 @@ public class Documento{
 
         //Busca su primera aparicion
         if(this.FrecuenciaBooleana(query)){
-            int pos = this._contenido[query].First();
+            // int pos = this._contenido[query].First();
             System.Console.WriteLine($"{query} Aparece {this._contenido[query].Count} veces");
-            System.Console.WriteLine($"Su primera ocurrencia es {pos}");
+            // System.Console.WriteLine($"Su primera ocurrencia es {pos}");
             System.Console.WriteLine($"Existen un total de {this._texto.Length} palabras");
             
+            int idealPos = -1;//Posicion ideal para hallar el snippet
+            int score = 0;//Valor que genera esta posicion
+
+            //Por cada posicion donde aparece la palabra
+            foreach(int pos in this._contenido[query]){
+                System.Console.WriteLine(pos);
+                //Cuan buena es esta posicion
+                int cntRep = 0;//Cantidad de veces que se repite query
+                for(int i = Math.Max(0,pos - SnippetLength / 2), snippetWords = 0;i < this._texto.Length && snippetWords < SnippetLength;++i,++snippetWords){
+                    if(this._texto[i] == query)++cntRep;
+                }
+                if(cntRep > score){
+                    score = cntRep;
+                    idealPos = pos;
+                }
+            }
+            System.Console.WriteLine(idealPos);
             //Computa el snippet
-            for(int i = Math.Max(0,pos - SnippetLength / 2), snippetWords = 0;i < this._texto.Length && snippetWords < SnippetLength;++i,++snippetWords){
-                System.Console.WriteLine($"La palabra {i} tiene {this._texto[i].Length} letras");
+            for(int i = Math.Max(0,idealPos - SnippetLength / 2), snippetWords = 0;i < this._texto.Length && snippetWords < SnippetLength;++i,++snippetWords){
                 snippet += this._texto[i] + " ";
             }
         }
