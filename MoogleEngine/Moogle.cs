@@ -12,6 +12,7 @@ public static class Moogle
         //Carga los documentos
         Documento[] documentos = Cargador.Load();
 
+        //Esta funcionalidad se puede encapsular
         //Determina el score de cada documento
         double[] score = Valorar(terminos,documentos);
 
@@ -26,6 +27,7 @@ public static class Moogle
 
         //No muestres resultados irrelevantes en la busqueda
         items = Depurador.Depurar(items);
+        //Hasta aqui
 
         return new SearchResult(items, query);
     }

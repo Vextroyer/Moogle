@@ -90,43 +90,64 @@ public class Documento{
     }
 
     //Metodo para generar un snippet a partir de una consulta
-    public string GetSnippet(string[] terminos){
+    public string GetSnippet(string[] terminosQuery){
         string snippet = "";
+        
+        //Creo un Documento a partir de mi query
+        Documento query = new Documento(terminosQuery,"I am your query");
+        
+        //Determino los distintos terminos de mi query
+        string[] terminosDistintos = query.GetUniqueTerms();
+        
+        //Corpus de subDocumentos formados por los terminos de query
+        List<Documento> subDocumentos = new List<Documento>();
 
-        //De la palabra
-        string query = terminos[0];
+        //Por cada aparicion de algun termino de la query en el documento
+        foreach(string term in terminosDistintos){
+            if(!this.FrecuenciaBooleana(term))continue;
+            foreach(int pos in this._contenido[term]){
 
-        //Busca su primera aparicion
-        if(this.FrecuenciaBooleana(query)){
-            // int pos = this._contenido[query].First();
-            System.Console.WriteLine($"{query} Aparece {this._contenido[query].Count} veces");
-            // System.Console.WriteLine($"Su primera ocurrencia es {pos}");
-            System.Console.WriteLine($"Existen un total de {this._texto.Length} palabras");
-            
-            int idealPos = -1;//Posicion ideal para hallar el snippet
-            int score = 0;//Valor que genera esta posicion
-
-            //Por cada posicion donde aparece la palabra
-            foreach(int pos in this._contenido[query]){
-                System.Console.WriteLine(pos);
-                //Cuan buena es esta posicion
-                int cntRep = 0;//Cantidad de veces que se repite query
+                //Construyo un minidocumento con esta seccion del documento
+                List<string> miniDocumentoTerms = new List<string>();
                 for(int i = Math.Max(0,pos - SnippetLength / 2), snippetWords = 0;i < this._texto.Length && snippetWords < SnippetLength;++i,++snippetWords){
-                    if(this._texto[i] == query)++cntRep;
+                    miniDocumentoTerms.Add(this._texto[i]);
                 }
-                if(cntRep > score){
-                    score = cntRep;
-                    idealPos = pos;
-                }
-            }
-            System.Console.WriteLine(idealPos);
-            //Computa el snippet
-            for(int i = Math.Max(0,idealPos - SnippetLength / 2), snippetWords = 0;i < this._texto.Length && snippetWords < SnippetLength;++i,++snippetWords){
-                snippet += this._texto[i] + " ";
+                subDocumentos.Add(new Documento(miniDocumentoTerms.ToArray(),"I am your subDocument"));
             }
         }
 
+        //Si no aparece ningun termino en este documento
+        if(subDocumentos.Count == 0)return snippet;
+
+        double[] valor = Moogle.Valorar(terminosDistintos,subDocumentos.ToArray());
+        
+        //Mi snippet es el subdocumento de mejor score
+        int posicionMejor = 0;
+        double valorMejor = double.MinValue;
+        for(int i=0;i<valor.Length;++i){
+            if(valorMejor < valor[i]){
+                valorMejor = valor[i];
+                posicionMejor = i;
+            }
+        }
+
+        foreach(string s in subDocumentos[posicionMejor]._texto)snippet += s + " ";
+
         return snippet;
     }
+
+    //Metodo para obtener el conjunto de las palabras que forman este documento. Este conjunto no contiene palabras repetidas
+    public string[] GetUniqueTerms(){
+        //Crea tantos strings como palabras diferentes
+        string[] terminosDistintos = new string[this._contenido.Count];
+        
+        int i = 0;
+        foreach(string s in this._contenido.Keys){
+            terminosDistintos[i++] = s;
+        }
+
+        return terminosDistintos;
+    }
+
     #endregion Metodos
 }
