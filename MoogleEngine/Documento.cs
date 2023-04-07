@@ -24,7 +24,14 @@ public class Documento{
         get;
         private set;
     }
-    
+
+    //Devuelve una copia del contenido
+    public Dictionary<string,List<int>> Contenido{
+        get{
+            return new Dictionary<string, List<int>>(_contenido);
+        }
+    }
+
     #endregion Propiedades
 
     #region Constructores
@@ -38,12 +45,9 @@ public class Documento{
         this.MostFrequentCount = 0;
         
         for(int i = 0;i < terminos.Length;++i){
-            if(!this._contenido.ContainsKey(terminos[i])){
-                this._contenido.Add(terminos[i],new List<int>());
-                this._contenido[terminos[i]].Add(i);
-            }
-            else
-                this._contenido[terminos[i]].Add(i);
+            if(!this._contenido.ContainsKey(terminos[i])) this._contenido.Add(terminos[i],new List<int>());//Si no existe el termino en el diccionario, agregalo.
+            
+            this._contenido[terminos[i]].Add(i);//Guarda la posicion en que aparece
             
             MostFrequentCount = Math.Max(MostFrequentCount,this._contenido[terminos[i]].Count);
         }
@@ -52,18 +56,8 @@ public class Documento{
     public Documento(Documento other){
         this.Titulo = other.Titulo;
         this.MostFrequentCount = other.MostFrequentCount;
-        this._contenido = other.CopiarContenido();
+        this._contenido = other.Contenido;
         this._texto =(string[]) other._texto.Clone();
-    }
-
-    //Metodo auxiliar para devlover una copia del contenido
-    public Dictionary<string,List<int>> CopiarContenido(){
-        //Copia cada entrada del diccionario
-        Dictionary<string,List<int>> contenido = new Dictionary<string, List<int>>();
-        foreach(var c in _contenido){
-            contenido.Add(c.Key,c.Value);
-        }
-        return contenido;
     }
 
     #endregion Constructores
