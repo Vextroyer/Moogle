@@ -21,13 +21,13 @@ static class Snippet{
         //Corpus de subDocumentos formados por los terminos de query
         List<Documento> subDocumentos = new List<Documento>();
 
+        string[] texto = doc.Texto;//Texto del documento
         //Por cada aparicion de algun termino de la query en el documento
         foreach(string term in terminosDistintos){
             if(!Valorador.FrecuenciaBooleana(term,doc))continue;
             foreach(int pos in doc.Contenido[term]){
 
                 //Construyo un minidocumento con esta seccion del documento
-                string[] texto = doc.Texto;
                 List<string> miniDocumentoTerms = new List<string>();
                 for(int i = Math.Max(0,pos - SnippetLength / 2), snippetWords = 0;i < texto.Length && snippetWords < SnippetLength;++i,++snippetWords){
                     miniDocumentoTerms.Add(texto[i]);
