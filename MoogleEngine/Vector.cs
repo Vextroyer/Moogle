@@ -28,9 +28,14 @@ class Vector{
     public Vector(Dictionary<string,int> otherVectorContent){
         this._vector = new Dictionary<string, int>(otherVectorContent);
     } 
+
+    //Crea un vector a partir de otro vector
+    public Vector(Vector other):this(other.Contenido){
+    }
     #endregion Constructores
     
     #region  Propiedades
+    //Accede al valor de la componente dada por index
     public int this[string index]{
         get{
             if(index == null || !this._vector.ContainsKey(index))return 0;
@@ -40,13 +45,15 @@ class Vector{
     //Accede a las distintas palabras que conforman el vector
     public string[] Dimensiones{
         get{
-            string[] dimen = new string[this._vector.Count];
-            int i = 0;
-            foreach(var entry in this._vector){
-                dimen[i] = entry.Key;
-                ++i;
-            }
+            string[] dimen = this._vector.Keys.ToArray();
             return dimen;
+        }
+    }
+
+    //Accede a una copia del contenido del vector
+    public Dictionary<string,int> Contenido{
+        get{
+            return new Dictionary<string,int>(this._vector);
         }
     }
     #endregion Propiedades
@@ -55,7 +62,7 @@ class Vector{
     //Producto Punto, o producto de dos vectores. Es la suma de los prouctos componente a componente.
     public static double operator*(Vector v,Vector u){
         double dotProduct = 0.0;
-        
+        //Solo las palabras presentes en ambos vectores, componentes diferentes de 0, aportan a la suma
         foreach(string palabra in v.Dimensiones){
             dotProduct += v[palabra] * u[palabra];
         }
