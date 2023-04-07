@@ -43,6 +43,7 @@ public class Documento{
         this._contenido = new Dictionary<string, List<int>>();
 
         this.MostFrequentCount = 0;
+
         
         for(int i = 0;i < terminos.Length;++i){
             if(!this._contenido.ContainsKey(terminos[i])) this._contenido.Add(terminos[i],new List<int>());//Si no existe el termino en el diccionario, agregalo.
