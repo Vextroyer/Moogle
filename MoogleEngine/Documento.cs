@@ -64,24 +64,10 @@ public class Documento{
     #endregion Constructores
 
     #region Metodos
-    //Determina si un termino aparece o no en el documento
-    public bool FrecuenciaBooleana(string query){
-        if(string.IsNullOrEmpty(query))return false;
-        return this._contenido.ContainsKey(query);//Este metodo no arrojara una excepcion pues esto solo sucede si el string es nulo, y en tal caso se hubiese ejecutado la linea de codigo anterior
-    }
-
-    //Devueve la cantidad de veces que aparece un termino en un documento
-    public int FrecuenciaBruta(string termino){
-        if(this._contenido.ContainsKey(termino))return this._contenido[termino].Count;
-        else return 0;
-    }
-
-    //Calcula la frecuencia normalizada del termino en el documento
-    public double FrecuenciaNormalizada(string query){
-        double frecuenciaBruta = this.FrecuenciaBruta(query);
-        double mayorFrecuenciaBruta = this.MostFrequentCount;
-        //mayorFrecuenciaBruta = 0 nunca sucedera, porque esto implica que existe un documento vacio y de suceder esto ya la clase Cargador se hubiese encargado de ignorarlo, o que no existen documentos en la coleccion, y la clase Cargador se encargara de lanzar una excepcion en dicho caso.
-        return frecuenciaBruta / mayorFrecuenciaBruta;
+    //Devuelve la cantidad de apariciones de termino en el documento
+    public int TermCount(string termino){
+        if(string.IsNullOrEmpty(termino) || !this._contenido.ContainsKey(termino))return 0;
+        else return this._contenido[termino].Count;
     }
 
     //Metodo para generar un snippet a partir de una consulta
@@ -99,7 +85,7 @@ public class Documento{
 
         //Por cada aparicion de algun termino de la query en el documento
         foreach(string term in terminosDistintos){
-            if(!this.FrecuenciaBooleana(term))continue;
+            if(!Valorador.FrecuenciaBooleana(term,this))continue;
             foreach(int pos in this._contenido[term]){
 
                 //Construyo un minidocumento con esta seccion del documento
