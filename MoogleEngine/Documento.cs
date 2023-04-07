@@ -24,7 +24,7 @@ public class Documento{
         get;
         private set;
     }
-
+    
     #endregion Propiedades
 
     #region Constructores

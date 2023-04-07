@@ -3,18 +3,10 @@ namespace MoogleEngine;
 *Se encarga de la entrada de informacion desde la carpeta Content,su procesamiento y distribucion a las otras partes pertinentes del programa
 **/
 public static class Cargador{
-    private static Documento[] _documentos;//Contiene el corpus de Documentos. De esta forma solo es necesario cargarlos una sola vez.
     private const string contentDir = "../Content";//Path del directorio donde estan los documentos
 
     //Carga los archivos y devuelve documentos con informacion de cada archivo
     public static Documento[] Load(){
-        //Si ya se cargaron los documentos, devuelve una copia
-        if(_documentos != null){
-            Documento[] documentosCopia = new Documento[_documentos.Length];
-            for(int i=0;i<_documentos.Length;++i)documentosCopia[i] = new Documento(_documentos[i]);
-            return documentosCopia;
-        }
-
         //De la carpeta Content :
 
         string[] archivos = Directory.EnumerateFiles(contentDir).ToArray();//Identifica todos los archivos
@@ -45,10 +37,6 @@ public static class Cargador{
             ++j;
         }
 
-        //Guarda los documentos para una proxima busqueda
-        _documentos = new Documento[documentosValidos.Length];
-        for(int i=0;i<_documentos.Length;++i)_documentos[i] = new Documento(documentosValidos[i]);
-
         return documentosValidos;
     }
 
@@ -57,6 +45,7 @@ public static class Cargador{
         string texto = File.ReadAllText(archivo);//Texto sin procesar
 
         texto = texto.ReplaceLineEndings(" ");//Convierte los saltos de lineas en espacios en blanco
+        texto = texto.Replace('\t',' ');//Convierte todos las tabulacion en espacios en blanco
         texto = texto.ToLower();//Convierte todas las letras a minusculas
 
         char[] textoFormateado = new char[texto.Length];//Texto temporal que contiene solo letras, numeros y espacios en blanco

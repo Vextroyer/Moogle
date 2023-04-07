@@ -3,23 +3,23 @@
 
 public static class Moogle
 {
-
+    private static Documento[] _documentos;//Contiene el corpus de documentos. De esta forma solo es necesario cargarlo una vez.
     public static SearchResult Query(string query) {
+        //Carga los documentos
+        if(_documentos == null)_documentos = Cargador.Load();
+
         //Procesar la consulta
         string[] terminos = Procesar(query);
         foreach(string s in terminos)System.Console.WriteLine(s);
 
-        //Carga los documentos
-        Documento[] documentos = Cargador.Load();
-
         //Esta funcionalidad se puede encapsular
         //Determina el score de cada documento
-        double[] score = Valorar(terminos,documentos);
+        double[] score = Valorar(terminos,_documentos);
 
         //Crea un resultado por cada documento
-        SearchItem[] items = new SearchItem[documentos.Length];
+        SearchItem[] items = new SearchItem[_documentos.Length];
         for(int i=0;i<items.Length;++i){
-            items[i] = new SearchItem(documentos[i].Titulo,documentos[i].GetSnippet(terminos),score[i]);
+            items[i] = new SearchItem(_documentos[i].Titulo,_documentos[i].GetSnippet(terminos),score[i]);
         }
 
         //Ordena los documentos basados en su score descendentemente
