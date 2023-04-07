@@ -7,7 +7,6 @@ namespace MoogleEngine;
 public class Documento{
 
     #region Miembros
-    private const int SnippetLength = 20;//Cantidad maxima de terminos mostrados en el snippet
     private Dictionary<string,List<int>> _contenido;//Este diccionario representa el contenido del documento agrupado de la forma (termino, posiciones en las que aparece)
     private string[] _texto;//Este es el contenido textual del documento, palabra por palabra.
 
@@ -18,17 +17,21 @@ public class Documento{
         get;
         private set;
     }
-
-    //De todos los terminos del documento guarda la frecuencia bruta del de mayor frecuencia bruta, auxiliar para calcular la frecuencia normalizada 
+    //Cantidad de veces que se repite el termino que mas se repite
     public int MostFrequentCount{
         get;
         private set;
     }
-
     //Devuelve una copia del contenido
     public Dictionary<string,List<int>> Contenido{
         get{
             return new Dictionary<string, List<int>>(_contenido);
+        }
+    }
+    //Devuelve una copia del texto
+    public string[] Texto{
+        get{
+            return (string[]) this._texto.Clone();
         }
     }
 
@@ -68,53 +71,6 @@ public class Documento{
     public int TermCount(string termino){
         if(string.IsNullOrEmpty(termino) || !this._contenido.ContainsKey(termino))return 0;
         else return this._contenido[termino].Count;
-    }
-
-    //Metodo para generar un snippet a partir de una consulta
-    public string GetSnippet(string[] terminosQuery){
-        string snippet = "";
-        
-        //Creo un Documento a partir de mi query
-        Documento query = new Documento(terminosQuery,"I am your query");
-        
-        //Determino los distintos terminos de mi query
-        string[] terminosDistintos = query.GetUniqueTerms();
-        
-        //Corpus de subDocumentos formados por los terminos de query
-        List<Documento> subDocumentos = new List<Documento>();
-
-        //Por cada aparicion de algun termino de la query en el documento
-        foreach(string term in terminosDistintos){
-            if(!Valorador.FrecuenciaBooleana(term,this))continue;
-            foreach(int pos in this._contenido[term]){
-
-                //Construyo un minidocumento con esta seccion del documento
-                List<string> miniDocumentoTerms = new List<string>();
-                for(int i = Math.Max(0,pos - SnippetLength / 2), snippetWords = 0;i < this._texto.Length && snippetWords < SnippetLength;++i,++snippetWords){
-                    miniDocumentoTerms.Add(this._texto[i]);
-                }
-                subDocumentos.Add(new Documento(miniDocumentoTerms.ToArray(),"I am your subDocument"));
-            }
-        }
-
-        //Si no aparece ningun termino en este documento
-        if(subDocumentos.Count == 0)return snippet;
-
-        double[] valor = Valorador.Valorar(terminosDistintos,subDocumentos.ToArray());
-        
-        //Mi snippet es el subdocumento de mejor score
-        int posicionMejor = 0;
-        double valorMejor = double.MinValue;
-        for(int i=0;i<valor.Length;++i){
-            if(valorMejor < valor[i]){
-                valorMejor = valor[i];
-                posicionMejor = i;
-            }
-        }
-
-        foreach(string s in subDocumentos[posicionMejor]._texto)snippet += s + " ";
-
-        return snippet;
     }
 
     //Metodo para obtener el conjunto de las palabras que forman este documento. Este conjunto no contiene palabras repetidas
