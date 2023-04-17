@@ -19,11 +19,8 @@ public static class Cargador{
         //Hazle corresponder a cada documento un archivo
         int cntDocumentosVacios = 0;//Puede suceder que despues de procesado, un documento no tenga informacion util y por tanto este vacio
         for(int i=0;i<documentos.Length;++i){
-            string[] contenido = ObtenElContenido(archivos[i]);
-            if(contenido.Length > 0)
-                documentos[i] = new Documento(contenido,ObtenElTitulo(archivos[i]));
-            else
-                ++cntDocumentosVacios;
+            documentos[i] = new Documento(ObtenElContenido(archivos[i]),ObtenElTitulo(archivos[i]));
+            if(documentos[i].IsEmpty)++cntDocumentosVacios;
         }
         
         //Si no hay documentos no vacios, excepcion
@@ -32,7 +29,7 @@ public static class Cargador{
         //Documentos no vacios
         Documento[] documentosValidos = new Documento[documentos.Length - cntDocumentosVacios];
         for(int i=0,j = 0;i<documentos.Length && j < documentosValidos.Length;++i){
-            if(documentos[i] == null)continue;
+            if(documentos[i].IsEmpty)continue;
             documentosValidos[j] = documentos[i];
             ++j;
         }

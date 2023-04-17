@@ -34,6 +34,12 @@ public class Documento{
             return (string[]) this._terminos.Clone();
         }
     }
+    //Devuelve verdadero si el documento esta vacio. El documento esta vacio si no tiene terminos.
+    public bool IsEmpty{
+        get{
+            return !(this._terminos.Length > 0);
+        }
+    }
 
     #endregion Propiedades
 
