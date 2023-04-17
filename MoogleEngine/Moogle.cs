@@ -9,7 +9,7 @@ public static class Moogle
         if(_documentos == null)_documentos = Cargador.Load();
 
         //Procesar la consulta
-        string[] terminos = Tokenizer.Procesar(query);
+        string[] terminos = Tokenizer.ProcesarTexto(query).Item1;
         foreach(string s in terminos)System.Console.WriteLine(s);
 
         //Esta funcionalidad se puede encapsular
