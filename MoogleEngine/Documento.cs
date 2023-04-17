@@ -6,14 +6,19 @@ namespace MoogleEngine;
 public class Documento{
 
     #region Miembros
-    private Dictionary<string,List<int>> _contenido;//Este diccionario representa el contenido del documento agrupado de la forma (termino, posiciones en las que aparece)
     private string[] _terminos;//Estas son los terminos que componen el documento, un termino es una palabra o un numero.
-
+    private int[] _posiciones;//Estas es la posicion inicial en texto de cada termino del documento
+    private Dictionary<string,List<int>> _contenido;//Este diccionario representa el contenido del documento agrupado de la forma (termino, posiciones en las que aparece)
     #endregion Miembros
 
     #region Propiedades
     //El titulo del Documento
     public string Titulo{
+        get;
+        private set;
+    }
+    //Este es el contenido textual del documento
+    public string Texto{
         get;
         private set;
     }
@@ -34,6 +39,12 @@ public class Documento{
             return (string[]) this._terminos.Clone();
         }
     }
+    //Devuelve una copia del array posiciones
+    public int[] Posiciones{
+        get{
+            return (int[])this._posiciones.Clone();
+        }
+    }
     //Devuelve verdadero si el documento esta vacio. El documento esta vacio si no tiene terminos.
     public bool IsEmpty{
         get{
@@ -48,9 +59,14 @@ public class Documento{
     public Documento(string texto,string nombre){
         this.Titulo = nombre;
 
-        //Los terminos que componen el texto
-        this._terminos = Tokenizer.ProcesarTexto(texto).Item1;
+        this.Texto = texto;
 
+        //Los terminos que componen el texto y las posiciones donde aparecen
+        (string[],int[]) auxiliar = Tokenizer.ProcesarTexto(texto);
+        this._terminos = auxiliar.Item1;
+        this._posiciones = auxiliar.Item2;
+        //Terminos y posiciones tienen la misma cantidad de elementos porque de lo contrario Tokenizer.ProcesarTexto(texto) hubiese lanzado una excepcion y este codigo no se hubiese ejecutado
+        
         this._contenido = new Dictionary<string, List<int>>();
 
         this.MostFrequentCount = 0;
@@ -66,9 +82,11 @@ public class Documento{
     //Crea este documento a partir de una copia de otro 
     public Documento(Documento other){
         this.Titulo = other.Titulo;
+        this.Texto = other.Texto;
         this.MostFrequentCount = other.MostFrequentCount;
         this._contenido = other.Contenido;
         this._terminos = other.Terminos;
+        this._posiciones = other.Posiciones;
     }
 
     #endregion Constructores
