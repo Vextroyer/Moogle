@@ -6,19 +6,18 @@ namespace MoogleEngine;
 static class Tokenizer{
     
     /**
-    *Dado un texto realizar 4 operaciones basicas de formato sobre el
-    *1-Reemplazar los saltos de linea por espacios
-    *2-Reemplazar las tabulaciones por espacios
-    *3-Convertirlo a minusculas para obtener uniformidad
-    *4-Convertir las vocales con tilde a vocales simples
+    *Dado un texto realizar 3 operaciones basicas de formato sobre el
+    *1-Conservar solo letras y numeros
+    *2-Convertir a minusculas para obtener uniformidad
+    *3-Convertir las vocales con tilde a vocales simples
     **/
     public static string[] Procesar(string query){
         //Accede a los elementos del string para modificarlos en una sola pasada
         char[] txt = query.ToCharArray();
 
         for(int i=0;i<txt.Length;++i){
-            //Espacios
-            if(txt[i] == '\n' || txt[i] == '\t'){
+            //Simbolos
+            if(!char.IsLetterOrDigit(txt[i])){
                 txt[i] = ' ';
                 continue;
             }

@@ -43,49 +43,7 @@ public static class Cargador{
     //Procesa y devuelve un listado de los terminos del archivo
     private static string[] ObtenElContenido(string archivo){
         string texto = File.ReadAllText(archivo);//Texto sin procesar
-
-        texto = texto.ReplaceLineEndings(" ");//Convierte los saltos de lineas en espacios en blanco
-        texto = texto.Replace('\t',' ');//Convierte todos las tabulacion en espacios en blanco
-        texto = texto.ToLower();//Convierte todas las letras a minusculas
-
-        char[] textoFormateado = new char[texto.Length];//Texto temporal que contiene solo letras, numeros y espacios en blanco
-        for(int j=0;j<textoFormateado.Length;++j)textoFormateado[j] = ' ';//Inicialmente esta compuesto por espacios en blanco
-        for(int i = 0,j = 0;i<texto.Length;++i){
-           if(char.IsLetterOrDigit(texto[i]) || char.IsWhiteSpace(texto[i])){
-                //Reemplazar vocales con tilde por vocales simples
-                switch(texto[i]){
-                    case 'á':
-                        textoFormateado[j] = 'a';
-                        break;
-            
-                    case 'é':
-                        textoFormateado[j] = 'e';
-                        break;
-            
-                    case 'í':
-                        textoFormateado[j] = 'i';
-                        break;
-            
-                    case 'ó':
-                        textoFormateado[j] = 'o';
-                        break;
-            
-                    case 'ú':
-                        textoFormateado[j] = 'u';
-                        break;
-            
-                    default:
-                        textoFormateado[j] = texto[i];
-                        break;
-                }
-                ++j;
-           }
-        }
-        texto = new string(textoFormateado);
-        
-        string[] terminos = texto.Split(" ",StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);//Separa cada termino y omite palabras vacias o de espacios
-        
-        return terminos;
+        return Tokenizer.Procesar(texto);
     }
 
     /**
