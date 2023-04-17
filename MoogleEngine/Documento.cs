@@ -2,13 +2,12 @@ namespace MoogleEngine;
 
 /**
 *Esta clase es la abstraccion de un documento.
-*Lo represento como las diferentes palabras que lo componen y sus repeticiones
 **/
 public class Documento{
 
     #region Miembros
     private Dictionary<string,List<int>> _contenido;//Este diccionario representa el contenido del documento agrupado de la forma (termino, posiciones en las que aparece)
-    private string[] _texto;//Este es el contenido formateado del documento. Cada palabra y numero, en minusculas, sin simbolos.
+    private string[] _terminos;//Estas son los terminos que componen el documento, un termino es una palabra o un numero.
 
     #endregion Miembros
 
@@ -29,10 +28,10 @@ public class Documento{
             return new Dictionary<string, List<int>>(_contenido);
         }
     }
-    //Devuelve una copia del texto
-    public string[] Texto{
+    //Devuelve una copia de los terminos
+    public string[] Terminos{
         get{
-            return (string[]) this._texto.Clone();
+            return (string[]) this._terminos.Clone();
         }
     }
 
@@ -42,7 +41,7 @@ public class Documento{
     public Documento(string[] terminos, string nombre){
         this.Titulo = nombre;
 
-        this._texto = (string[]) terminos.Clone();
+        this._terminos = (string[]) terminos.Clone();
 
         this._contenido = new Dictionary<string, List<int>>();
 
@@ -62,7 +61,7 @@ public class Documento{
         this.Titulo = other.Titulo;
         this.MostFrequentCount = other.MostFrequentCount;
         this._contenido = other.Contenido;
-        this._texto =(string[]) other.Texto;
+        this._terminos = other.Terminos;
     }
 
     #endregion Constructores

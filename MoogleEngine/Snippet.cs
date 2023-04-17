@@ -21,7 +21,7 @@ static class Snippet{
         //Corpus de subDocumentos formados por los terminos de query
         List<Documento> subDocumentos = new List<Documento>();
 
-        string[] texto = doc.Texto;//Texto del documento
+        string[] texto = doc.Terminos;//Terminos del documento
         //Por cada aparicion de algun termino de la query en el documento
         foreach(string term in terminosDistintos){
             if(!Valorador.FrecuenciaBooleana(term,doc))continue;
@@ -51,7 +51,7 @@ static class Snippet{
             }
         }
 
-        foreach(string s in subDocumentos[posicionMejor].Texto)snippet += s + " ";
+        foreach(string s in subDocumentos[posicionMejor].Terminos)snippet += s + " ";
 
         return snippet;
     }
