@@ -8,11 +8,12 @@ public class Documento{
 
     #region Miembros
     private Dictionary<string,List<int>> _contenido;//Este diccionario representa el contenido del documento agrupado de la forma (termino, posiciones en las que aparece)
-    private string[] _texto;//Este es el contenido textual del documento, palabra por palabra.
+    private string[] _texto;//Este es el contenido formateado del documento. Cada palabra y numero, en minusculas, sin simbolos.
 
     #endregion Miembros
 
     #region Propiedades
+    //El titulo del Documento
     public string Titulo{
         get;
         private set;
@@ -53,7 +54,7 @@ public class Documento{
             
             this._contenido[terminos[i]].Add(i);//Guarda la posicion en que aparece
             
-            MostFrequentCount = Math.Max(MostFrequentCount,this._contenido[terminos[i]].Count);
+            MostFrequentCount = Math.Max(MostFrequentCount,TermCount(terminos[i]));
         }
     }
     //Crea este documento a partir de una copia de otro 
