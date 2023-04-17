@@ -61,7 +61,7 @@ public class Documento{
         this.Titulo = other.Titulo;
         this.MostFrequentCount = other.MostFrequentCount;
         this._contenido = other.Contenido;
-        this._texto =(string[]) other._texto.Clone();
+        this._texto =(string[]) other.Texto;
     }
 
     #endregion Constructores
