@@ -44,22 +44,23 @@ public class Documento{
     #endregion Propiedades
 
     #region Constructores
-    public Documento(string[] terminos, string nombre){
+    //Crea un documento a partir de un texto
+    public Documento(string texto,string nombre){
         this.Titulo = nombre;
 
-        this._terminos = (string[]) terminos.Clone();
+        //Los terminos que componen el texto
+        this._terminos = Tokenizer.ProcesarTexto(texto).Item1;
 
         this._contenido = new Dictionary<string, List<int>>();
 
         this.MostFrequentCount = 0;
 
-        
-        for(int i = 0;i < terminos.Length;++i){
-            if(!this._contenido.ContainsKey(terminos[i])) this._contenido.Add(terminos[i],new List<int>());//Si no existe el termino en el diccionario, agregalo.
+        for(int i = 0;i < this._terminos.Length;++i){
+            if(!this._contenido.ContainsKey(this._terminos[i])) this._contenido.Add(this._terminos[i],new List<int>());//Si no existe el termino en el diccionario, agregalo.
             
-            this._contenido[terminos[i]].Add(i);//Guarda la posicion en que aparece
+            this._contenido[this._terminos[i]].Add(i);//Guarda la posicion en que aparece
             
-            MostFrequentCount = Math.Max(MostFrequentCount,TermCount(terminos[i]));
+            MostFrequentCount = Math.Max(MostFrequentCount,TermCount(this._terminos[i]));
         }
     }
     //Crea este documento a partir de una copia de otro 

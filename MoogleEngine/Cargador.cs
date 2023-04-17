@@ -37,10 +37,9 @@ public static class Cargador{
         return documentosValidos;
     }
 
-    //Procesa y devuelve un listado de los terminos del archivo
-    private static string[] ObtenElContenido(string archivo){
-        string texto = File.ReadAllText(archivo);//Texto sin procesar
-        return Tokenizer.ProcesarTexto(texto).Item1;
+    //Devuelve el contenido textual del archivo
+    private static string ObtenElContenido(string archivo){
+        return File.ReadAllText(archivo);
     }
 
     /**
