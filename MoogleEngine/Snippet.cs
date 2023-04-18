@@ -64,7 +64,7 @@ static class Snippet{
             }
         }
 
-        //foreach(string s in subDocumentos[posicionMejor].Terminos)snippet += s + " ";
+        //Construye el snippet a partir del texto original que contiene a los terminos del subdocumento. Por motivos de visualidad.
         string texto = doc.Texto;
         for(int i = posiciones[posicionMejor].Item1;i<posiciones[posicionMejor].Item2;++i){
             snippet += texto[i];
