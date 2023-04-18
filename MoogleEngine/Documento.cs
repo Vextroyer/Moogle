@@ -110,6 +110,14 @@ public class Documento{
 
         return terminosDistintos;
     }
+    //Retorna verdadero si el documento contiene el termino, falso de otra forma
+    public bool Contiene(string termino){
+        return TermCount(termino) > 0;//Si lo contiene al menos 1 vez entonces lo contiene 
+    }
+    //Retorna falso si el documento contiene al termino, verdadero de la otra forma
+    public bool NoContiene(string termino){
+        return !Contiene(termino);
+    }
 
     #endregion Metodos
 }
