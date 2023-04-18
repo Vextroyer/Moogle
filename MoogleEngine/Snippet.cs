@@ -8,20 +8,26 @@ namespace MoogleEngine;
 static class Snippet{
     private const int SnippetLength = 20;//Cantidad maxima de terminos mostrados en el snippet
 
-    //Computa el mejor snippet para el documento basado en la consulta
+    /**
+    *Computa el mejor snippet para el documento basado en la consulta.
+    *Por cada termino unico de la consulta que aparece en el documento
+    *creo un subdocumento del documento cuyo termino central es el termino de la consulta y su 
+    *texto son los terminos vecinos del temino de la consulta . Luego devuelvo el mejor de estos
+    *documentos relativos a la consulta.
+    **/
     public static string GetSnippet(string query,Documento doc){
         string snippet = "";
         
-        //Creo un Documento a partir de mi query
-        Documento queryDoc = new Documento(query,"I am your query");
+        //De la query
+        Documento queryDoc = new Documento(query,"I am your query");//Creo un Documento a partir de mi query
+        string[] terminosQuery = queryDoc.GetUniqueTerms();//Determino los terminos unicos de mi query
         
-        //Determino los distintos terminos de mi query
-        string[] terminosQuery = queryDoc.GetUniqueTerms();
-        
-        //Corpus de subDocumentos formados por los terminos de query
-        List<Documento> subDocumentos = new List<Documento>();
-
+        //Del documento
         string[] terminosDocumento = doc.Terminos;//Terminos del documento
+        int[] posicionTerminosDocumento = doc.Posiciones;//Posiciones en el texto que ocupan los terminos
+        List<Documento> subDocumentos = new List<Documento>();//Documentos formados por subconjuntos de los terminos del documento que determinan los terminos de la query
+        List<(int,int)>posiciones = new List<(int, int)>();//Posiciones en el texto del documento donde comienza y termina los terminos del subdocumento
+
         //Por cada aparicion de algun termino de la query en el documento
         foreach(string term in terminosQuery){
             if(doc.NoContiene(term))continue;
@@ -29,10 +35,17 @@ static class Snippet{
 
                 //Construyo un subdocumento con esta seccion del documento
                 string textoSubDocumento = "";
-                for(int i = Math.Max(0,pos - SnippetLength / 2), snippetWords = 0;i < terminosDocumento.Length && snippetWords < SnippetLength;++i,++snippetWords){
+                
+                int minPos = Math.Max(0,pos - SnippetLength / 2);//Indice del termino inicial
+                int maxPos = 0;//Indice del termino final
+
+                //El nuevo subdocumento tendra como contenido una vecindad del termino de query
+                for(int i = minPos, snippetWords = 0;i < terminosDocumento.Length && snippetWords < SnippetLength;++i,++snippetWords){
                     textoSubDocumento += terminosDocumento[i] + " ";
+                    maxPos = Math.Max(maxPos,i);
                 }
                 subDocumentos.Add(new Documento(textoSubDocumento,"I am your subDocument"));
+                posiciones.Add((posicionTerminosDocumento[minPos],posicionTerminosDocumento[maxPos] + terminosDocumento[maxPos].Length));
             }
         }
 
@@ -51,7 +64,11 @@ static class Snippet{
             }
         }
 
-        foreach(string s in subDocumentos[posicionMejor].Terminos)snippet += s + " ";
+        //foreach(string s in subDocumentos[posicionMejor].Terminos)snippet += s + " ";
+        string texto = doc.Texto;
+        for(int i = posiciones[posicionMejor].Item1;i<posiciones[posicionMejor].Item2;++i){
+            snippet += texto[i];
+        }
 
         return snippet;
     }
