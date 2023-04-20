@@ -29,7 +29,8 @@ static class Valorador{
         //D es la cantidad total de documentos, Dt es la cantidad de documentos de D donde aparece t
         double D = Coleccion.Count;
         double Dt = Coleccion.EnCuantosDocumentosAparece(query);
-        return Math.Log2(D / (1.0 + Dt));
+        if(Dt == 0)return 0.0;
+        return Math.Log2(D / Dt);
     }
 
     //Devueve la cantidad de veces que aparece un termino en un documento
