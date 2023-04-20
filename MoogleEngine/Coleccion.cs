@@ -20,7 +20,7 @@ static class Coleccion{
     private static Documento[] _documentos = new Documento[0];
     public static Documento[] Documentos{
         get{
-            return _documentos;
+            return (Documento[])_documentos.Clone();
         }
         private set{
             _documentos = value;
@@ -38,7 +38,7 @@ static class Coleccion{
     //Conjunto de terminos
     public static string[] Terminos{
         get{
-            return _terminos;
+            return (string[])_terminos.Clone();
         }
         private set{
             _terminos = value;
@@ -51,8 +51,6 @@ static class Coleccion{
         }
     }
     private static Dictionary<string, List<int>> _terminosYApariciones = new Dictionary<string, List<int>>();//Relaciona el termino con los documentos en los que aparece
-    //Valor idf de cada termino del conjunto de terminos de la coleccion
-    private static double[] _idf = new double[0];
 
     //Inicializa la coleccion con los documentos dados.
     public static void Inicializar(Documento[] documentos){
@@ -73,16 +71,6 @@ static class Coleccion{
         }
         
         Coleccion.Terminos = Coleccion._terminosYApariciones.Keys.ToArray();
-        Coleccion._idf = new double[Coleccion.UniqueTermsCount];
-        
-        //El valor idf de un termino es 
-        //idf(t,D) = log ( |D| / |{d E D: t E d}|)
-        //El idf es el logaritmo en alguna base de la cantidad total de documentos entre la cantidad de documentos que contienen el termino
-        //Por cada termino:
-        for(int i=0;i<Coleccion.UniqueTermsCount;++i){
-            Coleccion._idf[i] = Math.Log2(((double)Coleccion.Count) / ((double)(1.0 + Coleccion.EnCuantosDocumentosAparece(Coleccion._terminos[i]))));
-        }
-
         /*//Debugging
         System.Console.WriteLine("-----DEBUGGING------");
         System.Console.WriteLine($"La coleccion tiene {Coleccion.Count} documentos");
@@ -95,11 +83,11 @@ static class Coleccion{
         */
     }
 
-    //Devuelve el documento en determinada posicion de la coleccion
+    //Devuelve una copia de el documento en determinada posicion de la coleccion
     public static Documento At(int index){
         if(index < 0 || index >= Coleccion.Count)throw new IndexOutOfRangeException();
 
-        return Coleccion._documentos[index];
+        return new Documento(Coleccion._documentos[index]);
     }
     //Cantidad de documentos diferentes de la coleccion donde aparece este termino
     public static int EnCuantosDocumentosAparece(string termino){
