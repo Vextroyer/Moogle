@@ -3,10 +3,9 @@
 
 public static class Moogle
 {
-    private static Documento[] _documentos;//Contiene el corpus de documentos. De esta forma solo es necesario cargarlo una vez.
     public static SearchResult Query(string query) {
         //Carga los documentos
-        if(_documentos == null)_documentos = Cargador.Load();
+        if(!Coleccion.Inicializada)Coleccion.Inicializar(Cargador.Load());
 
         //Procesar la consulta
         string[] terminos = Tokenizer.ProcesarTexto(query).Item1;
@@ -14,12 +13,12 @@ public static class Moogle
 
         //Esta funcionalidad se puede encapsular
         //Determina el score de cada documento
-        double[] score = Valorador.Valorar(terminos,_documentos);
+        double[] score = Valorador.Valorar(terminos,Coleccion.Documentos);
 
         //Crea un resultado por cada documento
-        SearchItem[] items = new SearchItem[_documentos.Length];
+        SearchItem[] items = new SearchItem[Coleccion.Count];
         for(int i=0;i<items.Length;++i){
-            items[i] = new SearchItem(_documentos[i].Titulo,Snippet.GetSnippet(query,_documentos[i]),score[i]);
+            items[i] = new SearchItem(Coleccion.At(i).Titulo,Snippet.GetSnippet(query,Coleccion.At(i)),score[i]);
         }
 
         //Ordena los documentos basados en su score descendentemente
