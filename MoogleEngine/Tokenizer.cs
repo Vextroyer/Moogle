@@ -95,4 +95,28 @@ static class Tokenizer{
         texto = new String(txt);       
         return Dividir(texto);
     }
+
+    /**
+    *Dado una consulta por el usuario devolver los terminos que la componen, ademas de realizar otras operaciones sobre esta.
+    *Operaciones :
+    *1-Remover las StopWords. De esta forma no son tenidas en cuenta a la hora de computar el score.
+    **/
+    public static string[] ProcesarQuery(string query){
+        //Determina los diferentes terminos
+        string[] terminos = ProcesarTexto(query).Item1;
+        //Elimina las StopWords
+        List<string> terminosSinStopWord = new List<string>();
+        foreach(string termino in terminos){
+            //Si no es StopWord
+            if(!Coleccion.EsStopWord(termino))terminosSinStopWord.Add(termino);
+        }
+        return terminosSinStopWord.ToArray();
+    }
+
+    //Metodo que dado un conjunto de terminos (array de string) crea un texto, concatenando los string
+    public static string CombinarEnTexto(string[] terminos){
+        string texto = "";
+        foreach (string s in terminos)texto += s + " ";
+        return texto;
+    }
 }
