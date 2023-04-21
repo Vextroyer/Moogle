@@ -99,4 +99,9 @@ static class Coleccion{
         if(string.IsNullOrEmpty(termino) || !Coleccion._terminosYApariciones.ContainsKey(termino))return new int[0];
         return Coleccion._terminosYApariciones[termino].ToArray();
     }
+    //Determina si un termino dado es StopWord en este documento
+    public static bool EsStopWord(string termino){
+        //Considero como stopword algun los terminos que aparecen en mas del 75% de los documentos
+        return 4*EnCuantosDocumentosAparece(termino) >= 3 * Coleccion.Count;
+    }
 }
