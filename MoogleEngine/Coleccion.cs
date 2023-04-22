@@ -32,8 +32,6 @@ static class Coleccion{
             return _documentos.Length;
         }
     }
-    //Representacion como vectores de los documentos
-    private static Vector[] _vectorDocumento = new Vector[0];
 
     //Es el conjunto de terminos a partir de los cuales se crean los documentos de la coleccion
     private static string[] _terminos = new string[0];
@@ -54,6 +52,15 @@ static class Coleccion{
     }
     private static Dictionary<string, List<int>> _terminosYApariciones = new Dictionary<string, List<int>>();//Relaciona el termino con los documentos en los que aparece
 
+    //Representacion como vectores de los documentos
+    private static Vector[] _vectorDocumento = new Vector[0];
+    public static Vector[] Vectores{
+        get{
+            return (Vector[])Coleccion._vectorDocumento.Clone();
+        }
+    }
+
+
     //Inicializa la coleccion con los documentos dados.
     public static void Inicializar(Documento[] documentos){
         //Solo se puede inicializar una vez
@@ -62,12 +69,6 @@ static class Coleccion{
         Coleccion.Inicializada = true;
         
         Coleccion.Documentos = documentos;
-
-        //Crea un vector por cada documento
-        Coleccion._vectorDocumento = new Vector[Coleccion.Count];
-        for(int i=0;i<Coleccion.Count;++i){
-            Coleccion._vectorDocumento[i] = new Vector(Coleccion.At(i));
-        }
 
         //Por cada documento
         for(int i=0;i<Coleccion.Count;++i){
@@ -79,6 +80,12 @@ static class Coleccion{
         }
         
         Coleccion.Terminos = Coleccion._terminosYApariciones.Keys.ToArray();
+        
+        //Crea un vector por cada documento
+        Coleccion._vectorDocumento = new Vector[Coleccion.Count];
+        for(int i=0;i<Coleccion.Count;++i){
+            Coleccion._vectorDocumento[i] = new Vector(Coleccion.At(i));
+        }
         /*//Debugging
         System.Console.WriteLine("-----DEBUGGING------");
         System.Console.WriteLine($"La coleccion tiene {Coleccion.Count} documentos");

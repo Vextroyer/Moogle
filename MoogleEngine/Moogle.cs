@@ -9,9 +9,6 @@ public static class Moogle
 
         //Procesar la consulta
         string[] terminosDeLaConsulta = Tokenizer.ProcesarQuery(query);
-        System.Console.Write(terminosDeLaConsulta.Length + " ");
-        foreach(string s in terminosDeLaConsulta)System.Console.Write(s);
-        System.Console.WriteLine();
 
         //Esta funcionalidad se puede encapsular
         //Determina el score de cada documento

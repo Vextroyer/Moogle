@@ -86,4 +86,13 @@ class Vector{
         return new Vector(nuevoVector);
     }
     #endregion Operadores
+
+    override public string ToString(){
+        string s = "[";
+        foreach(var entry in this._vector){
+            s += new string($" <{entry.Key},{entry.Value}> ");
+        }
+        s+="]";
+        return s;
+    }
 }
