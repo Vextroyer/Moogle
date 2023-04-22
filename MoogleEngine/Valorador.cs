@@ -4,18 +4,13 @@ namespace MoogleEngine;
 *Utiliza el modelo TF-IDF
 **/
 static class Valorador{
-    //Dado una coleccion de documentos y un listado de terminos, computa un valor de relevancia para cada documento con resprecto a los terminos
-    public static double[] Valorar(string[] terms,Documento[] docs){
-        double[] score = new double[docs.Length];
+    //Dado una consulta como vector y una coleccion de documentos como vectores computa un valor de similaridad
+    //de la consulta respecto a cada vector
+    public static double[] Valorar(Vector query,Vector[] documentos){
+        double[] score = new double[documentos.Length];
 
         //Calcula el score de cada documento
-        for(int i=0;i<docs.Length;++i){
-            //Es la combinacion del score individual de cada termino con respecto al documento
-            for(int j=0;j<terms.Length;++j){
-                score[i] += FrecuenciaNormalizada(terms[j],docs[i]) * Idf(terms[j]);
-            }
-            
-        }
+        for(int i=0;i<documentos.Length;++i)score[i] = query * documentos[i];
 
         return score;
     }
