@@ -21,9 +21,7 @@ class Vector{
     public Vector(Documento documento){
         this._vector = new Dictionary<string, double>();
         foreach(string termino in documento.GetUniqueTerms()){
-            double tf = documento.TermCount(termino);
-            double idf = Valorador.Idf(termino);
-            this._vector.Add(termino,tf*idf);
+            this._vector.Add(termino,Valorador.Tf(termino,documento)*Valorador.Idf(termino));
         }
     }
     //Crea un vector a partir de otro vector

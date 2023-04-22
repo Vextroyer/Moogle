@@ -24,24 +24,28 @@ static class Valorador{
     *Metodos relativos al modelo TF-IDF
     **/
 
-    public static double Idf(string query){
+    public static double Idf(string termino){
         //idf(t,D) = log ( |D| / (1 + |Dt|))
         //D es la cantidad total de documentos, Dt es la cantidad de documentos de D donde aparece t
         double D = Coleccion.Count;
-        double Dt = Coleccion.EnCuantosDocumentosAparece(query);
+        double Dt = Coleccion.EnCuantosDocumentosAparece(termino);
         if(Dt == 0)return 0.0;
         return Math.Log2(D / Dt);
     }
+    //Decide un modo de calcular el Tf(t,d)
+    public static double Tf(string termino, Documento documento){
+        return  FrecuenciaNormalizada(termino,documento);
+    }
 
     //Devueve la cantidad de veces que aparece un termino en un documento
-    public static int FrecuenciaBruta(string query,Documento doc){
-        return  doc.TermCount(query);
+    public static int FrecuenciaBruta(string termino,Documento documento){
+        return  documento.TermCount(termino);
     }
 
     //Calcula la frecuencia normalizada del termino en el documento
-    public static double FrecuenciaNormalizada(string query,Documento doc){
-        double frecuenciaBruta = FrecuenciaBruta(query,doc);
-        double mayorFrecuenciaBruta = doc.MostFrequentCount;
+    public static double FrecuenciaNormalizada(string termino,Documento documento){
+        double frecuenciaBruta = FrecuenciaBruta(termino,documento);
+        double mayorFrecuenciaBruta = documento.MostFrequentCount;
         //mayorFrecuenciaBruta = 0 nunca sucedera, porque esto implica que existe un documento vacio y de suceder esto ya la clase Cargador se hubiese encargado de ignorarlo, o que no existen documentos en la coleccion, y la clase Cargador se encargara de lanzar una excepcion en dicho caso.
         return frecuenciaBruta / mayorFrecuenciaBruta;
     }
