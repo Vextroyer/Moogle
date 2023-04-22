@@ -66,8 +66,16 @@ class Vector{
     public static double operator*(Vector v,Vector u){
         double dotProduct = 0.0;
         //Solo las palabras presentes en ambos vectores, componentes diferentes de 0, aportan a la suma
-        foreach(string palabra in v.Terminos){
-            dotProduct += v[palabra] * u[palabra];
+        //Tecnica para multiplicar con el vector de menos dimensiones
+        if(v.Dimension <= u.Dimension){
+            foreach(string termino in v.Terminos){
+                dotProduct += v[termino] * u[termino];
+            }
+        }
+        else{
+            foreach(string termino in u.Terminos){
+                dotProduct += v[termino] * u[termino];
+            }
         }
         return dotProduct;
     }
