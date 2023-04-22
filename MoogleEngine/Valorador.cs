@@ -32,7 +32,8 @@ static class Valorador{
         //idf(t,D) = log ( |D| / (1 + |Dt|))
         //D es la cantidad total de documentos, Dt es la cantidad de documentos de D donde aparece t
         double D = Coleccion.Count;
-        double Dt = 1 + Coleccion.EnCuantosDocumentosAparece(termino);
+        double Dt = Coleccion.EnCuantosDocumentosAparece(termino);
+        if(Dt == 0.0)return 0;
         return Math.Log10(D / Dt);
     }
     //Decide un modo de calcular el Tf(t,d)

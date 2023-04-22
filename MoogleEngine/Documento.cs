@@ -8,7 +8,8 @@ public class Documento{
     #region Miembros
     private string[] _terminos;//Estas son los terminos que componen el documento, un termino es una palabra o un numero.
     private int[] _posiciones;//Estas es la posicion inicial en texto de cada termino del documento
-    private Dictionary<string,List<int>> _contenido;//Este diccionario representa el contenido del documento agrupado de la forma (termino, posiciones en las que aparece)
+    private Dictionary<string,List<int>> _contenido;//Este diccionario representa el contenido del documento agrupado de la forma (termino, posiciones en _terminos en las que aparece)
+    private int _mostFrequentTermCount;//Cantidad de veces que se repite el termino que mas se repite
     #endregion Miembros
 
     #region Propiedades
@@ -24,8 +25,19 @@ public class Documento{
     }
     //Cantidad de veces que se repite el termino que mas se repite
     public int MostFrequentCount{
-        get;
-        private set;
+        get{
+            //Si se calculan por primera vez
+            if(this._mostFrequentTermCount == 0){
+                foreach(var entry in this._contenido){
+                    if(Coleccion.EsStopWord(entry.Key))continue;
+                    this._mostFrequentTermCount = Math.Max(this._mostFrequentTermCount,entry.Value.Count);
+                }
+            }
+            return this._mostFrequentTermCount;
+        }
+        private set{
+            this._mostFrequentTermCount = value;
+        }
     }
     //Devuelve una copia del contenido
     public Dictionary<string,List<int>> Contenido{
@@ -69,14 +81,12 @@ public class Documento{
         
         this._contenido = new Dictionary<string, List<int>>();
 
-        this.MostFrequentCount = 0;
+        this._mostFrequentTermCount = 0;
 
         for(int i = 0;i < this._terminos.Length;++i){
             if(!this._contenido.ContainsKey(this._terminos[i])) this._contenido.Add(this._terminos[i],new List<int>());//Si no existe el termino en el diccionario, agregalo.
             
             this._contenido[this._terminos[i]].Add(i);//Guarda la posicion en que aparece
-            
-            MostFrequentCount = Math.Max(MostFrequentCount,TermCount(this._terminos[i]));
         }
     }
     //Crea este documento a partir de una copia de otro 
