@@ -10,15 +10,24 @@ static class Valorador{
         double[] score = new double[documentos.Length];
 
         //Calcula el score de cada documento
-        for(int i=0;i<documentos.Length;++i)score[i] = query * documentos[i];
+        for(int i=0;i<documentos.Length;++i)score[i] = Similaridad(query, documentos[i]);
 
         return score;
     }
 
     /**
-    *Metodos relativos al modelo TF-IDF
+    *Metodos relativos al modelo vectorial con TF-IDF
     **/
-
+    //Calcula la similaridad entre dos vectores
+    public static double Similaridad(Vector u,Vector v){
+        return SimilaridadCoseno(u,v);
+    }
+    //Calucla la similaridad por la formula del coseno de dos vectores
+    public static double SimilaridadCoseno(Vector u,Vector v){
+        double num = u * v;
+        double den = (u * u) * (v * v);
+        return num / Math.Sqrt(den);
+    }
     public static double Idf(string termino){
         //idf(t,D) = log ( |D| / (1 + |Dt|))
         //D es la cantidad total de documentos, Dt es la cantidad de documentos de D donde aparece t
