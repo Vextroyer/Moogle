@@ -32,6 +32,8 @@ static class Coleccion{
             return _documentos.Length;
         }
     }
+    //Representacion como vectores de los documentos
+    private static Vector[] _vectorDocumento = new Vector[0];
 
     //Es el conjunto de terminos a partir de los cuales se crean los documentos de la coleccion
     private static string[] _terminos = new string[0];
@@ -60,6 +62,12 @@ static class Coleccion{
         Coleccion.Inicializada = true;
         
         Coleccion.Documentos = documentos;
+
+        //Crea un vector por cada documento
+        Coleccion._vectorDocumento = new Vector[Coleccion.Count];
+        for(int i=0;i<Coleccion.Count;++i){
+            Coleccion._vectorDocumento[i] = new Vector(Coleccion.At(i));
+        }
 
         //Por cada documento
         for(int i=0;i<Coleccion.Count;++i){
