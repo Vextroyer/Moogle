@@ -67,7 +67,7 @@ public static class Cargador{
 
         string[] palabras = nombre.Split('_');//Dividelo en las palabras que lo conforman
         
-        //Pon en mayuzcula las iniciales de las palabras y separalas por espacios 
+        //Pon en mayuscula las iniciales de las palabras y separalas por espacios 
         nombre = "";
         foreach(string p in palabras){
             char[] palabra = p.ToCharArray();

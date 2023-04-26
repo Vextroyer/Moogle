@@ -10,12 +10,12 @@ class Depurador{
         //Determina la cantidad de elementos irrelevantes
         int cntIrrelevantes = 0;
         for(int i =0;i<items.Length;++i){
-            if(EsIrrelevante(items[i].Score))++cntIrrelevantes;
+            if(EsIrrelevante(items[i]))++cntIrrelevantes;
         }
 
         SearchItem[] auxItems = new SearchItem[items.Length - cntIrrelevantes];
         for(int i=0,j =0;i<items.Length && j < auxItems.Length;++i){
-            if(EsIrrelevante(items[i].Score))continue;
+            if(EsIrrelevante(items[i]))continue;
             auxItems[j] = items[i];
             ++j;
         }
@@ -23,7 +23,7 @@ class Depurador{
         return auxItems;
     }
     //Metodo auxiliar para determinar si un resultado es relevante basado en su score
-    private static bool EsIrrelevante(double score){
-        return score == 0;
+    private static bool EsIrrelevante(SearchItem item){
+        return item.Score == 0;
     }
 }
