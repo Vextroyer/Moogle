@@ -49,12 +49,14 @@ public static class Cargador{
     **/
     private static string ObtenElTitulo(string nombreArchivo){
         
-        //nombreArchivo obedece al siguiente formato $"{contentDir}/{nombre}.{extension}", donde :
+        //nombreArchivo obedece al siguiente formato $"{contentDir}/{nombreDelArchivo}",
+        //donde nombreDelArchivo = $"{nombre}.{extension}", porque asi estan nombrados en el directorio del contenido 
+        //porque este es el formato de salida de los string del metodo Directory.EnumerateFiles donde :
         // {contentDir} es el directorio donde estan contenidos los archivos
         // {nombre} es el nombre del archivo, en minusculas y con "_"(underscores) en vez de espacios
         // {extension} es la extension del archivo , en este caso .txt 
         
-        string nombre = nombreArchivo.Substring(contentDir.Length + 1,nombreArchivo.Length - contentDir.Length - 1 - ".txt".Length);//Obten de nombreArchivo el {nombre}, para entender el por que de las expresiones dentro de Substring observa el ejemplo spbre el encabezado de la funcion
+        string nombre = nombreArchivo.Substring(contentDir.Length + 1,nombreArchivo.Length - contentDir.Length - 1 - ".txt".Length);//Obten de nombreArchivo el {nombre}, para entender el por que de las expresiones dentro de Substring observa el ejemplo sobre el encabezado de la funcion
 
         string[] palabras = nombre.Split('_');//Dividelo en las palabras que lo conforman
         
