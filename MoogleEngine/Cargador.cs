@@ -34,6 +34,13 @@ public static class Cargador{
             ++j;
         }
 
+        #region Debug
+        //Descomentar las siguientes lineas de codigo para ver que archivos seran cargados.
+        // System.Console.WriteLine($"Documentos que seran cargados : {documentosValidos.Length}");
+        // foreach(Documento documento in documentosValidos)System.Console.WriteLine(documento.Titulo);
+        // System.Console.WriteLine("Fin de documentos cargados");
+        #endregion Debug
+
         return documentosValidos;
     }
 
