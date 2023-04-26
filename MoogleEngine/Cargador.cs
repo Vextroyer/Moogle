@@ -38,8 +38,8 @@ public static class Cargador{
     }
 
     //Devuelve el contenido textual del archivo
-    private static string ObtenElContenido(string archivo){
-        return File.ReadAllText(archivo);
+    private static string ObtenElContenido(string nombreArchivo){
+        return File.ReadAllText(nombreArchivo);
     }
 
     /**
