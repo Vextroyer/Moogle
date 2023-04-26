@@ -62,12 +62,14 @@ static class Coleccion{
 
 
     //Inicializa la coleccion con los documentos dados.
-    public static void Inicializar(Documento[] documentos){
+    public static void Inicializar(){
         //Solo se puede inicializar una vez
         if(Coleccion.Inicializada)return;
 
         Coleccion.Inicializada = true;
-        
+
+        //Carga los documentos
+        Documento[] documentos = Cargador.Load();
         Coleccion.Documentos = documentos;
 
         //Por cada documento

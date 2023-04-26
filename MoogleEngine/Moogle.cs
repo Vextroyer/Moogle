@@ -5,7 +5,7 @@ public static class Moogle
 {
     public static SearchResult Query(string query) {
         //Carga los documentos
-        if(!Coleccion.Inicializada)Coleccion.Inicializar(Cargador.Load());
+        Coleccion.Inicializar();
 
         //Procesar la consulta
         query = Tokenizer.CombinarEnTexto(Tokenizer.ProcesarQuery(query));
