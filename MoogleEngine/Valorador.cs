@@ -22,11 +22,15 @@ static class Valorador{
     public static double Similaridad(Vector u,Vector v){
         return SimilaridadCoseno(u,v);
     }
-    //Calucla la similaridad por la formula del coseno de dos vectores
+    //Calcula la similaridad por la formula del coseno de dos vectores
     public static double SimilaridadCoseno(Vector u,Vector v){
         double num = u * v;
         double den = (u * u) * (v * v);
         return num / Math.Sqrt(den);
+    }
+    //Calcula un peso tfidf para un termino en un documento
+    public static double Pesar(string termino,Documento documento){
+        return Tf(termino,documento)*Valorador.Idf(termino);
     }
     public static double Idf(string termino){
         //idf(t,D) = log ( |D| / (1 + |Dt|))

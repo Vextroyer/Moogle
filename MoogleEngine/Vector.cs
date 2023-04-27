@@ -21,7 +21,7 @@ class Vector{
     public Vector(Documento documento){
         this._vector = new Dictionary<string, double>();
         foreach(string termino in documento.TerminosSinRepeticiones){
-            this._vector.Add(termino,Valorador.Tf(termino,documento)*Valorador.Idf(termino));
+            this._vector.Add(termino,Valorador.Pesar(termino,documento));
         }
     }
     //Crea un vector a partir de otro vector
