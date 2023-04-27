@@ -20,7 +20,7 @@ class Vector{
     //Crea un vector a partir de un documento
     public Vector(Documento documento){
         this._vector = new Dictionary<string, double>();
-        foreach(string termino in documento.GetUniqueTerms()){
+        foreach(string termino in documento.TerminosSinRepeticiones){
             this._vector.Add(termino,Valorador.Tf(termino,documento)*Valorador.Idf(termino));
         }
     }

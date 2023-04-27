@@ -7,9 +7,9 @@ public class Documento{
 
     #region Miembros
     private string[] _terminos;//Estas son los terminos que componen el documento, un termino es una palabra o un numero.
-    private int[] _posiciones;//Estas es la posicion inicial en texto de cada termino del documento
+    private int[] _posicionEnTexto;//Esta es la posicion inicial en texto de cada termino del documento
     private Dictionary<string,List<int>> _contenido;//Este diccionario representa el contenido del documento agrupado de la forma (termino, posiciones en _terminos en las que aparece)
-    private int _mostFrequentTermCount;//Cantidad de veces que se repite el termino que mas se repite
+    private int _mostFrequentTermCount;//Cantidad de veces que se repite el termino que mas se repite y no es stop word
     #endregion Miembros
 
     #region Propiedades
@@ -23,7 +23,7 @@ public class Documento{
         get;
         private set;
     }
-    //Cantidad de veces que se repite el termino que mas se repite
+    //Cantidad de veces que se repite el termino que mas se repite y no es stop word
     public int MostFrequentCount{
         get{
             //Si se calculan por primera vez
@@ -51,10 +51,17 @@ public class Documento{
             return (string[]) this._terminos.Clone();
         }
     }
-    //Devuelve una copia del array posiciones
-    public int[] Posiciones{
+    //Devuelve una copia del conjunto de terminos que conforman el documento, no hay repeticiones.
+    public string[] TerminosSinRepeticiones{
         get{
-            return (int[])this._posiciones.Clone();
+            return this._contenido.Keys.ToArray();
+        }
+    }
+
+    //Devuelve una copia del array posiciones
+    public int[] PosicionEnTexto{
+        get{
+            return (int[])this._posicionEnTexto.Clone();
         }
     }
     //Devuelve verdadero si el documento esta vacio. El documento esta vacio si no tiene terminos.
@@ -76,7 +83,7 @@ public class Documento{
         //Los terminos que componen el texto y las posiciones donde aparecen
         (string[],int[]) auxiliar = Tokenizer.ProcesarTexto(texto);
         this._terminos = auxiliar.Item1;
-        this._posiciones = auxiliar.Item2;
+        this._posicionEnTexto = auxiliar.Item2;
         //Terminos y posiciones tienen la misma cantidad de elementos porque de lo contrario Tokenizer.ProcesarTexto(texto) hubiese lanzado una excepcion y este codigo no se hubiese ejecutado
         
         this._contenido = new Dictionary<string, List<int>>();
@@ -96,7 +103,7 @@ public class Documento{
         this.MostFrequentCount = other.MostFrequentCount;
         this._contenido = other.Contenido;
         this._terminos = other.Terminos;
-        this._posiciones = other.Posiciones;
+        this._posicionEnTexto = other.PosicionEnTexto;
     }
 
     #endregion Constructores
@@ -106,19 +113,6 @@ public class Documento{
     public int TermCount(string termino){
         if(string.IsNullOrEmpty(termino) || !this._contenido.ContainsKey(termino))return 0;
         else return this._contenido[termino].Count;
-    }
-
-    //Metodo para obtener el conjunto de las palabras que forman este documento. Este conjunto no contiene palabras repetidas
-    public string[] GetUniqueTerms(){
-        //Crea tantos strings como palabras diferentes
-        string[] terminosDistintos = new string[this._contenido.Count];
-        
-        int i = 0;
-        foreach(string s in this._contenido.Keys){
-            terminosDistintos[i++] = s;
-        }
-
-        return terminosDistintos;
     }
     //Retorna verdadero si el documento contiene el termino, falso de otra forma
     public bool Contiene(string termino){

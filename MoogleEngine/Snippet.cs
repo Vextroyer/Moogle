@@ -20,11 +20,11 @@ static class Snippet{
         
         //De la query
         Documento queryDoc = new Documento(query,"I am your query");//Creo un Documento a partir de mi query
-        string[] terminosQuery = queryDoc.GetUniqueTerms();//Determino los terminos unicos de mi query
+        string[] terminosQuery = queryDoc.TerminosSinRepeticiones;//Determino los terminos unicos de mi query
         
         //Del documento
         string[] terminosDocumento = doc.Terminos;//Terminos del documento
-        int[] posicionTerminosDocumento = doc.Posiciones;//Posiciones en el texto que ocupan los terminos
+        int[] posicionTerminosDocumento = doc.PosicionEnTexto;//Posiciones en el texto que ocupan los terminos
         List<Documento> subDocumentos = new List<Documento>();//Documentos formados por subconjuntos de los terminos del documento que determinan los terminos de la query
         List<(int,int)>posiciones = new List<(int, int)>();//Posiciones en el texto del documento donde comienza y termina los terminos del subdocumento
 

@@ -75,7 +75,7 @@ static class Coleccion{
         //Por cada documento
         for(int i=0;i<Coleccion.Count;++i){
             //Asocia este documento a dicho termino
-            foreach(string termino in Coleccion.At(i).GetUniqueTerms()){
+            foreach(string termino in Coleccion.At(i).TerminosSinRepeticiones){
                 if(!Coleccion._terminosYApariciones.ContainsKey(termino))Coleccion._terminosYApariciones.Add(termino,new List<int>());//Si es un nuevo termino, agregalo
                 Coleccion._terminosYApariciones[termino].Add(i);//Asocia el termino con el documento donde aparece.
             }

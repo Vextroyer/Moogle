@@ -8,7 +8,7 @@ static class Valorador{
     //de la consulta respecto a cada vector
     public static double[] Valorar(Vector query,Vector[] documentos){
         double[] score = new double[documentos.Length];
-        System.Console.WriteLine(query);
+        
         //Calcula el score de cada documento
         for(int i=0;i<documentos.Length;++i)score[i] = Similaridad(query, documentos[i]);
 
