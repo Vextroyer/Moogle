@@ -18,36 +18,10 @@ static class Coleccion{
 
     //Son todos los documentos que constituyen la coleccion
     private static Documento[] _documentos = new Documento[0];
-    public static Documento[] Documentos{
-        get{
-            return (Documento[])_documentos.Clone();
-        }
-        private set{
-            _documentos = value;
-        }
-    }
     //Cantidad de documentos en la coleccion
     public static int Count{
         get{
             return _documentos.Length;
-        }
-    }
-
-    //Es el conjunto de terminos a partir de los cuales se crean los documentos de la coleccion
-    private static string[] _terminos = new string[0];
-    //Conjunto de terminos
-    public static string[] Terminos{
-        get{
-            return (string[])_terminos.Clone();
-        }
-        private set{
-            _terminos = value;
-        }
-    }
-    //Cardinalidad del conjunto de terminos a partir del cual se crean los documentos de esta coleccion
-    public static int UniqueTermsCount{
-        get{
-            return _terminos.Length;
         }
     }
     private static Dictionary<string, List<int>> _terminosYApariciones = new Dictionary<string, List<int>>();//Relaciona el termino con los documentos en los que aparece
@@ -67,8 +41,7 @@ static class Coleccion{
         if(Coleccion.Inicializada)return;
 
         //Carga los documentos
-        Documento[] documentos = Cargador.Load();
-        Coleccion.Documentos = documentos;
+        Coleccion._documentos = Cargador.Load();
 
         //Por cada documento
         for(int i=0;i<Coleccion.Count;++i){
@@ -78,8 +51,6 @@ static class Coleccion{
                 Coleccion._terminosYApariciones[termino].Add(i);//Asocia el termino con el documento donde aparece.
             }
         }
-        
-        Coleccion.Terminos = Coleccion._terminosYApariciones.Keys.ToArray();
         
         //Crea un vector por cada documento
         Coleccion._vectorDocumento = new Vector[Coleccion.Count];
@@ -110,11 +81,6 @@ static class Coleccion{
     public static int EnCuantosDocumentosAparece(string termino){
         if(string.IsNullOrEmpty(termino) || !Coleccion._terminosYApariciones.ContainsKey(termino))return 0;
         return Coleccion._terminosYApariciones[termino].Count;
-    }
-    //Documentos de la coleccion donde aparece este termino, arreglo vacio si no aparece
-    public static int[] EnCualesDocumentosAparece(string termino){
-        if(string.IsNullOrEmpty(termino) || !Coleccion._terminosYApariciones.ContainsKey(termino))return new int[0];
-        return Coleccion._terminosYApariciones[termino].ToArray();
     }
     //Determina si un termino dado es StopWord en este documento
     public static bool EsStopWord(string termino){
