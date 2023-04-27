@@ -66,8 +66,6 @@ static class Coleccion{
         //Solo se puede inicializar una vez
         if(Coleccion.Inicializada)return;
 
-        Coleccion.Inicializada = true;
-
         //Carga los documentos
         Documento[] documentos = Cargador.Load();
         Coleccion.Documentos = documentos;
@@ -88,6 +86,8 @@ static class Coleccion{
         for(int i=0;i<Coleccion.Count;++i){
             Coleccion._vectorDocumento[i] = new Vector(Coleccion.At(i));
         }
+
+        Coleccion.Inicializada = true;
         /*//Debugging
         System.Console.WriteLine("-----DEBUGGING------");
         System.Console.WriteLine($"La coleccion tiene {Coleccion.Count} documentos");
