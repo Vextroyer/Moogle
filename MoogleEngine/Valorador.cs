@@ -8,7 +8,7 @@ static class Valorador{
     //de la consulta respecto a cada vector
     public static double[] Valorar(Vector query,Vector[] documentos){
         double[] score = new double[documentos.Length];
-
+        System.Console.WriteLine(query);
         //Calcula el score de cada documento
         for(int i=0;i<documentos.Length;++i)score[i] = Similaridad(query, documentos[i]);
 
@@ -33,8 +33,7 @@ static class Valorador{
         //D es la cantidad total de documentos, Dt es la cantidad de documentos de D donde aparece t
         double D = Coleccion.Count;
         double Dt = Coleccion.EnCuantosDocumentosAparece(termino);
-        if(Dt == 0.0)return 0;
-        return Math.Log10(D / Dt);
+        return Math.Log10(D / ( 1 + Dt ) );
     }
     //Decide un modo de calcular el Tf(t,d)
     public static double Tf(string termino, Documento documento){
