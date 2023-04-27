@@ -10,8 +10,8 @@ static class Snippet{
 
     /**
     *Computa el mejor snippet para el documento basado en la consulta.
-    *Por cada termino unico de la consulta que aparece en el documento
-    *creo un subdocumento del documento cuyo termino central es el termino de la consulta y su 
+    *Por cada aparicion de cada termino unico de la consulta en el documento
+    *creo un subdocumento cuyo termino central es el termino de la consulta y su 
     *texto son los terminos vecinos del temino de la consulta . Luego devuelvo el mejor de estos
     *documentos relativos a la consulta.
     **/
