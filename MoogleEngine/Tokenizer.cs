@@ -4,49 +4,15 @@ namespace MoogleEngine;
 *Esta clase se encarga de procesar los textos a un formato asequible para otras partes del programa.
 **/
 static class Tokenizer{
-
     /**
-    *Dado un array realizar operaciones basicas de formato sobre el
-    *1-Conservar solo letras y numeros
-    *2-Convertir a minusculas para obtener uniformidad
-    *3-Convertir las vocales con tilde a vocales simples
+    *Dado un texto devolver un array de los terminos que lo componen, donde cada termino es una palabra
+    *o un numero, y un array de las posiciones que ocupan los terminos en el texto original. Ambos
+    *arrays son del mismo tamano.
     **/
-    public static void Procesar(char[] txt){
-        for(int i=0;i<txt.Length;++i){
-            //Simbolos
-            if(!char.IsLetterOrDigit(txt[i])){
-                txt[i] = ' ';
-                continue;
-            }
-
-            //Minusculas
-            txt[i] = char.ToLower(txt[i]);
-
-            //Vocales
-            switch(txt[i]){
-                    case 'á':
-                        txt[i] = 'a';
-                        break;
-            
-                    case 'é':
-                        txt[i] = 'e';
-                        break;
-            
-                    case 'í':
-                        txt[i] = 'i';
-                        break;
-            
-                    case 'ó':
-                        txt[i] = 'o';
-                        break;
-            
-                    case 'ú':
-                        txt[i] = 'u';
-                        break;
-                }
-        }
+    public static (string[],int[]) ProcesarTexto(string texto){
+        texto = Normalizar(texto,true);
+        return Dividir(texto);
     }
-
     /**
     *Toma un string, que representa un texto y devuelve un array de string que representan los terminos que lo componen.
     *Para esto diferencia los terminos por los espacios en blanco.
@@ -82,20 +48,6 @@ static class Tokenizer{
         if(posiciones.Count != terminos.Count)throw new Exception("No coinciden la cantidad de palabras con la cantidad de posiciones. Revise la implementacion.");
         return (terminos.ToArray(),posiciones.ToArray());
     }
-
-    /**
-    *Dado un texto devolver un array de los terminos que lo componen, donde cada termino es una palabra
-    *o un numero, y un array de las posiciones que ocupan los terminos en el texto original. Ambos
-    *arrays son del mismo tamano.
-    **/
-    public static (string[],int[]) ProcesarTexto(string texto){
-        //Accede a los elementos del string para modificarlos
-        char[] txt = texto.ToCharArray();
-        Tokenizer.Procesar(txt);
-        texto = new String(txt);       
-        return Dividir(texto);
-    }
-
     /**
     *Dado una consulta por el usuario devolver los terminos que la componen, ademas de realizar otras operaciones sobre esta.
     *Operaciones :
@@ -112,14 +64,12 @@ static class Tokenizer{
         }
         return terminosSinStopWord.ToArray();
     }
-
     //Metodo que dado un conjunto de terminos (array de string) crea un texto, concatenando los string
-    public static string CombinarEnTexto(string[] terminos){
+    public static string CrearTexto(string[] terminos){
         string texto = "";
         foreach (string s in terminos)texto += s + " ";
         return texto;
     }
-
     /**
     *   Dado un texto devolver un listado de tokens (palabras y operadores).
     *   Un token es:
@@ -187,11 +137,17 @@ static class Tokenizer{
         }
         return false;
     }
-
-    //Realiza modificaciones menores a un termino
-    private static string Normalizar(string termino){
-        char[]txt = termino.ToCharArray();
+    /**
+    *Realiza dos modificaciones sobre un texto
+    *1-Convertir a minusculas para obtener uniformidad
+    *2-Convertir las vocales con tilde a vocales simples
+    *3-Si el texto es de un archivo conserva solamente letras y digitos
+    **/
+    private static string Normalizar(string texto,bool esTextoDeArchivo = false){
+        char[]txt = texto.ToCharArray();
         for(int i=0;i<txt.Length;++i){
+            //Ejecucion solo en textos de archivos
+            if(esTextoDeArchivo && !char.IsLetterOrDigit(txt[i]))txt[i] = ' ';//Caracter delimitador
             //Minusculas
             txt[i] = char.ToLower(txt[i]);
             //Vocales
