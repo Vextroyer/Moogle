@@ -162,7 +162,8 @@ static class Tokenizer{
             AddToken(tokens,lastToken);
             lastToken = c.ToString();
         }
-        //Normalizar aqui
+        //Normalizar
+        for(int i=0;i<tokens.Count;++i)tokens[i] = Normalizar(tokens[i]);
         return tokens.ToArray();
     }
     //Metodo auxiliar para agregar un token a la lista
@@ -185,5 +186,37 @@ static class Tokenizer{
             return true;
         }
         return false;
+    }
+
+    //Realiza modificaciones menores a un termino
+    private static string Normalizar(string termino){
+        char[]txt = termino.ToCharArray();
+        for(int i=0;i<txt.Length;++i){
+            //Minusculas
+            txt[i] = char.ToLower(txt[i]);
+            //Vocales
+            switch(txt[i]){
+               case 'á':
+                    txt[i] = 'a';
+                    break;
+
+                case 'é':
+                    txt[i] = 'e';
+                    break;
+            
+                case 'í':
+                    txt[i] = 'i';
+                    break;
+            
+                case 'ó':
+                    txt[i] = 'o';
+                    break;
+            
+                case 'ú':
+                    txt[i] = 'u';
+                    break;
+            }
+        }
+        return new String(txt);
     }
 }
