@@ -103,7 +103,7 @@ static class Tokenizer{
     **/
     public static string[] ProcesarQuery(string query){
         //Determina los diferentes terminos
-        string[] terminos = ProcesarTexto(query).Item1;
+        string[] terminos = Tokenizer.Tokenize(query);
         //Elimina las StopWords
         List<string> terminosSinStopWord = new List<string>();
         foreach(string termino in terminos){
@@ -118,5 +118,72 @@ static class Tokenizer{
         string texto = "";
         foreach (string s in terminos)texto += s + " ";
         return texto;
+    }
+
+    /**
+    *   Dado un texto devolver un listado de tokens (palabras y operadores).
+    *   Un token es:
+    *       1- cada simbolo ^ ! ~
+    *       2- una secuencia finita de simbolos *
+    *       3- una secuencia finita de letras o digitos
+    **/
+    private static string comodin = "/";//Caracter comodin, ningun caracter utilizable coincidira con el 
+    public static string[] Tokenize(string texto){
+        List<string> tokens = new List<string>();//tokens
+        texto += comodin;
+        string lastToken = comodin;
+        //Por cada caracter del texto
+        foreach(char c in texto){
+            //En cada paso o se expande el token actual, o se agruega a la lista y se crea uno nuevo
+            
+            if(c == '!' || c == '^' || c == '~'){//Si es simbolo definido
+                AddToken(tokens,lastToken);//Anade a la lista el antiguo
+                lastToken = c.ToString();//Crea uno nuevo con este simbolo
+                continue;
+            }
+            if(c == '*'){
+                if(lastToken.Last() != '*'){//Si el anterior no es asterisco
+                    AddToken(tokens,lastToken);//Anadelo
+                    lastToken = "*";//Comienza una secuencia de asteriscos
+                }
+                else lastToken += "*";//COntinua la secuencia
+                continue;
+            }
+            if(char.IsLetterOrDigit(c)){
+                if(!char.IsLetterOrDigit(lastToken.Last()))//Si lo anterior no es un termino
+                {
+                    AddToken(tokens,lastToken);//Agregalo
+                    lastToken = c.ToString();//Comienza un nuevo termino
+                }
+                else lastToken += c;//Si no, expandelo
+                continue;
+            }
+            //Es un caracter de otro tipo
+            AddToken(tokens,lastToken);
+            lastToken = c.ToString();
+        }
+        //Normalizar aqui
+        return tokens.ToArray();
+    }
+    //Metodo auxiliar para agregar un token a la lista
+    private static void AddToken(List<string> tokens,string token){
+        if(IsValidToken(token))tokens.Add(token);
+    }
+    //Dado un token determina si es valido
+    private static bool IsValidToken(string token){
+        if(token == "!" || token == "^" || token == "~")return true;
+        if(token.First() == '*'){
+            foreach(char c in token){
+                if(c != '*')return false;
+            }
+            return true;
+        }
+        if(char.IsLetterOrDigit(token.First())){
+            foreach(char c in token){
+                if(!char.IsLetterOrDigit(c))return false;
+            }
+            return true;
+        }
+        return false;
     }
 }
