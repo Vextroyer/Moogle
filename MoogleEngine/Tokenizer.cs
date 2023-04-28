@@ -53,7 +53,7 @@ static class Tokenizer{
     *Operaciones :
     *1-Remover las StopWords. De esta forma no son tenidas en cuenta a la hora de computar el score.
     **/
-    public static string[] ProcesarQuery(string query){
+    public static string ProcesarQuery(string query){
         //Determina los diferentes terminos
         string[] terminos = Tokenizer.Tokenize(query);
         //Elimina las StopWords
@@ -62,7 +62,7 @@ static class Tokenizer{
             //Si no es StopWord
             if(!Coleccion.EsStopWord(termino))terminosSinStopWord.Add(termino);
         }
-        return terminosSinStopWord.ToArray();
+        return CrearTexto(terminosSinStopWord.ToArray());
     }
     //Metodo que dado un conjunto de terminos (array de string) crea un texto, concatenando los string
     public static string CrearTexto(string[] terminos){

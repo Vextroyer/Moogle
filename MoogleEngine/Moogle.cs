@@ -8,7 +8,7 @@ public static class Moogle
         Coleccion.Inicializar();
 
         //Procesar la consulta
-        query = Tokenizer.CrearTexto(Tokenizer.ProcesarQuery(query));
+        query = Tokenizer.ProcesarQuery(query);
 
         //Esta funcionalidad se puede encapsular
         //Determina el score de cada documento
