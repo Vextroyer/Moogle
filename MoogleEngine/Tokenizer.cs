@@ -53,16 +53,20 @@ static class Tokenizer{
     *Operaciones :
     *1-Remover las StopWords. De esta forma no son tenidas en cuenta a la hora de computar el score.
     **/
-    public static string ProcesarQuery(string query){
+    public static (string,Regla) ProcesarQuery(string query){
         //Determina los diferentes terminos
         string[] terminos = Tokenizer.Tokenize(query);
+        
+        //Determinar las operaciones realizadas sobre los terminos de la consulta
+        Regla r = new Regla(terminos);
+        System.Console.WriteLine(r);
         //Elimina las StopWords
         List<string> terminosSinStopWord = new List<string>();
         foreach(string termino in terminos){
             //Si no es StopWord
             if(!Coleccion.EsStopWord(termino))terminosSinStopWord.Add(termino);
         }
-        return CrearTexto(terminosSinStopWord.ToArray());
+        return (CrearTexto(terminosSinStopWord.ToArray()),r);
     }
     //Metodo que dado un conjunto de terminos (array de string) crea un texto, concatenando los string
     public static string CrearTexto(string[] terminos){
@@ -86,17 +90,9 @@ static class Tokenizer{
         foreach(char c in texto){
             //En cada paso o se expande el token actual, o se agruega a la lista y se crea uno nuevo
             
-            if(c == '!' || c == '^' || c == '~'){//Si es simbolo definido
+            if(c == '!' || c == '^' || c == '~' || c == '*'){//Si es simbolo definido
                 AddToken(tokens,lastToken);//Anade a la lista el antiguo
                 lastToken = c.ToString();//Crea uno nuevo con este simbolo
-                continue;
-            }
-            if(c == '*'){
-                if(lastToken.Last() != '*'){//Si el anterior no es asterisco
-                    AddToken(tokens,lastToken);//Anadelo
-                    lastToken = "*";//Comienza una secuencia de asteriscos
-                }
-                else lastToken += "*";//COntinua la secuencia
                 continue;
             }
             if(char.IsLetterOrDigit(c)){

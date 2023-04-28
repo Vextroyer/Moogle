@@ -2,53 +2,124 @@ namespace MoogleEngine;
 /**
 *Constituye las reglas que se le deben aplicar a los resultados de la consulta basado en los
 *operadores utilizados por el usuario.
+*Los operadores implementados son ! ^ * ~
+*Los operadores ! ^ * tienen la misma precedencia , digamos 1. Ademas actuan como prefijos. (!x , ^x , *x)
+*De tener una expresion como (!^**!****^^x) el operador mas cercano a la palabra es el que se evalua.
+*El operador ~ tiene precedencia 2. Ademas actua como infijo. (x ~ y)
 **/
 class Regla{
     #region Miembros
-    private string[] _not;//Representa la regla !. Los resultados de la consulta no deben contener ninguna de estas palabras.
-    private string[] _must;//Representa la regla ^. Los resultados de la consulta deben contener todas estas palabras.
-    private (string,int)[] _should;//Representa la regla *. Se debe dar mayor puntuacion a los resultados que contengan esta palabra
+    private List<string> _not;//Representa la regla !. Los resultados de la consulta no deben contener ninguna de estas palabras.
+    private List<string> _must;//Representa la regla ^. Los resultados de la consulta deben contener todas estas palabras.
+    private List<(string,int)> _should;//Representa la regla *. Se debe dar mayor puntuacion a los resultados que contengan esta palabra
     //acore al nivel de relevancia dado por el usario con la cantidad de asteriscos.
-    private (string,string)[] _close;//Representa la regla ~. Se debe dar mayor puntuacion a los resultados mientras mas cerca este
+    private List<(string,string)> _close;//Representa la regla ~. Se debe dar mayor puntuacion a los resultados mientras mas cerca este
     //la palara.
     #endregion Miembros
     
     #region Constructores
-    public Regla(string[] not,string[] must,(string,int)[] should,(string,string)[] close){
-        this._not = new string[0];
-        if(not != null)this._not =(string[]) not.Clone();
+    //Constructor por defecto
+    public Regla(){
+        this._not = new List<string>();
+        this._must = new List<string>();
+        this._should = new List<(string, int)>();
+        this._close = new List<(string, string)>();
+    }
+    //Crea un conjunto de reglas a partir de un string que contiene terminos y operadores
+    public Regla(string[] tokens):this(){
+        //Antes de entrar aqui llama al constructor por defecto
+        for(int i=0;i<tokens.Length;++i){
+            System.Console.WriteLine(tokens[i]);
+            if(EsTermino(tokens[i]))continue;//Si no es un termino
+            switch(tokens[i]){
+                case "!":
+                    if(i + 1 < tokens.Length && EsTermino(tokens[i + 1]))this._not.Add(tokens[i + 1]);
+                    break;
+                
+                case "^":
+                    if(i + 1 < tokens.Length && EsTermino(tokens[i + 1]))this._must.Add(tokens[i + 1]);
+                    break;
+                
+                case "*":
+                    int cantidadDeAsteriscos = 1;
+                    while(i + 1 < tokens.Length && tokens[i + 1] == "*"){
+                        ++i;
+                        ++cantidadDeAsteriscos;
+                    }
+                    if(i + 1 < tokens.Length && EsTermino(tokens[i+1]))this._should.Add((tokens[i + 1],cantidadDeAsteriscos));
+                    break;
 
-        this._must = new string[0];
-        if(must != null)this._must =(string[]) must.Clone();
-
-        this._should = new (string,int)[0];
-        if(should != null)this._should =((string,int)[]) should.Clone();
-
-        this._close = new (string,string)[0];
-        if(close != null)this._close =((string,string)[]) close.Clone();
+                case "~":
+                    if(i - 1 >= 0 && i + 1 < tokens.Length && EsTermino(tokens[i - 1]) && EsTermino(tokens[i + 1]))this._close.Add((tokens[i-1],tokens[i+1]));
+                    break;
+            }
+        }
     }
     #endregion Constructores
     
     #region Propiedades
     public string[] Not{
         get{
-            return (string[])this._not.Clone();
+            return this._not.ToArray();
         }
     }
     public string[] Must{
         get{
-            return (string[])this._must.Clone();
+            return this._must.ToArray();
         }
     }
     public (string,int)[] Should{
         get{
-            return ((string,int)[])this._should.Clone();
+            return this._should.ToArray();
         }
     }
     public (string,string)[] Close{
         get{
-            return ((string,string)[])this._close.Clone();
+            return this._close.ToArray();
         }
     }
     #endregion Propiedades
+
+    #region Metodos
+    private bool EsOperador(string token){
+        if(string.IsNullOrEmpty(token))return false;
+        return (token == "!" || token == "*" || token == "^" || token == "~");
+    }
+    private bool EsTermino(string token){
+        if(string.IsNullOrEmpty(token))return false;
+        return !EsOperador(token);
+    }
+
+    public override string ToString()
+    {
+        string toString = "";
+
+        toString += "Regla---------\n";
+        
+        toString += "! ";
+        foreach(string t in this._not)toString += t + " ";
+        toString += "\n";
+
+        toString += "^ ";
+        foreach(string t in this._must)toString += t + " ";
+        toString += "\n";
+
+        toString += "* ";
+        foreach(var v in this._should){
+            for(int i =0;i<v.Item2;++i)toString += "*";
+            toString += v.Item1 + " ";
+        }
+        toString += "\n";
+
+        toString += "~ ";
+        foreach(var v in this._close){
+            toString +=  v.Item1 + " ~ " + v.Item2 + " ";
+        }
+        toString += "\n";
+
+        toString += "FinRegla------\n";
+
+        return toString;
+    }
+    #endregion Metodos
 }
