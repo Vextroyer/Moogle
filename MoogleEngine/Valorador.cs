@@ -4,13 +4,17 @@ namespace MoogleEngine;
 *Utiliza el modelo TF-IDF
 **/
 static class Valorador{
-    //Dado una consulta como vector y una coleccion de documentos como vectores computa un valor de similaridad
-    //de la consulta respecto a cada vector. De existir aplica reglas definidas por el usuario.
-    public static double[] Valorar(Vector query,Vector[] documentos,Regla regla){
+    //Dado una consulta como documento y una coleccion de documentos computa un valor de similaridad
+    //de la consulta respecto a cada documento. De existir aplica reglas definidas por el usuario.
+    public static double[] Valorar(Documento query,Documento[] documentos,Regla regla){
+        Vector vectorQuery = new Vector(query);//Vector de la consulta
+        Vector[] vectorDocumento = new Vector[documentos.Length];//Vector de los documentos 
+        for(int i=0;i<vectorDocumento.Length;++i)vectorDocumento[i] = new Vector(documentos[i]);//Inicializa los vectores de los documentos
+
         double[] score = new double[documentos.Length];
 
         //Aplica la regla should(*), aumenta la importancia relativa de dichos terminos.
-        foreach((string,int) v in regla.Should)query.AplicarReglaShould(v.Item1,Regla.CalcularShould(v.Item2));
+        foreach((string,int) v in regla.Should)vectorQuery.AplicarReglaShould(v.Item1,Regla.CalcularShould(v.Item2));
 
         //Calcula el score de cada documento
         for(int i=0;i<documentos.Length;++i){
@@ -22,14 +26,14 @@ static class Valorador{
             bool esDocumentoValido = true;
             //Si alguno de !(not) esta
             foreach(string s in regla.Not){
-                if(Coleccion.At(i).Contiene(s)){
+                if(documentos[i].Contiene(s)){
                     esDocumentoValido = false;
                     break;
                 }
             }
             //Si algunos de ^(must) no esta
             foreach(string s in regla.Must){
-                if(Coleccion.At(i).NoContiene(s)){
+                if(documentos[i].NoContiene(s)){
                     esDocumentoValido = false;
                     break;
                 }
@@ -37,7 +41,7 @@ static class Valorador{
             if(!esDocumentoValido)continue;
             #endregion Operadores
 
-            score[i] = Similaridad(query,documentos[i]);
+            score[i] = Similaridad(vectorQuery,vectorDocumento[i]);
         }
 
         return score;

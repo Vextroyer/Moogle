@@ -52,9 +52,7 @@ static class Snippet{
         //Si no aparece ningun termino en este documento
         if(subDocumentos.Count == 0)return snippet;
 
-        Vector[] vectoresSubDocumentos = new Vector[subDocumentos.Count];
-        for(int i =0;i<vectoresSubDocumentos.Length;++i)vectoresSubDocumentos[i] = new Vector(subDocumentos[i]);
-        double[] valor = Valorador.Valorar(new Vector(queryDoc),vectoresSubDocumentos,new Regla());
+        double[] valor = Valorador.Valorar(queryDoc,subDocumentos.ToArray(),new Regla());
 
         //Mi snippet es el subdocumento de mejor score
         int posicionMejor = 0;

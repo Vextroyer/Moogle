@@ -55,6 +55,17 @@ class Regla{
             }
         }
     }
+    //Crea esta regla a partir de una copia de otra. Si es para snippet omite los operadores !(not) y ^(must).
+    public Regla(Regla other, bool esParaSnippet = true):this(){
+        //Si no es para snippet copia las reglas de los operadores !(not) y ^(must)
+        if(!esParaSnippet){
+            this._not = new List<string>(other.Not);
+            this._must = new List<string>(other.Must);
+        }
+        //Copia las reglas de los operadores *(should) y ~(close)
+        this._should = new List<(string, int)>(other.Should);
+        this._close = new List<(string, string)>(other.Close);
+    }
     #endregion Constructores
     
     #region Propiedades

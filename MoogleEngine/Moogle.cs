@@ -14,7 +14,7 @@ public static class Moogle
 
         //Esta funcionalidad se puede encapsular
         //Determina el score de cada documento
-        double[] score = Valorador.Valorar(new Vector(new Documento(query,"Iam your query")),Coleccion.Vectores,auxiliar.Item2);
+        double[] score = Valorador.Valorar(new Documento(query,"Iam your query"),Coleccion.Documentos,auxiliar.Item2);
 
         //Crea un resultado por cada documento
         SearchItem[] items = new SearchItem[Coleccion.Count];

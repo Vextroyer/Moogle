@@ -24,16 +24,12 @@ static class Coleccion{
             return _documentos.Length;
         }
     }
-    private static Dictionary<string, List<int>> _terminosYApariciones = new Dictionary<string, List<int>>();//Relaciona el termino con los documentos en los que aparece
-
-    //Representacion como vectores de los documentos
-    private static Vector[] _vectorDocumento = new Vector[0];
-    public static Vector[] Vectores{
+    public static Documento[] Documentos{
         get{
-            return (Vector[])Coleccion._vectorDocumento.Clone();
+            return Coleccion._documentos;
         }
     }
-
+    private static Dictionary<string, List<int>> _terminosYApariciones = new Dictionary<string, List<int>>();//Relaciona el termino con los documentos en los que aparece
 
     //Inicializa la coleccion con los documentos dados.
     public static void Inicializar(){
@@ -51,24 +47,8 @@ static class Coleccion{
                 Coleccion._terminosYApariciones[termino].Add(i);//Asocia el termino con el documento donde aparece.
             }
         }
-        
-        //Crea un vector por cada documento
-        Coleccion._vectorDocumento = new Vector[Coleccion.Count];
-        for(int i=0;i<Coleccion.Count;++i){
-            Coleccion._vectorDocumento[i] = new Vector(Coleccion.At(i));
-        }
 
         Coleccion.Inicializada = true;
-        /*//Debugging
-        System.Console.WriteLine("-----DEBUGGING------");
-        System.Console.WriteLine($"La coleccion tiene {Coleccion.Count} documentos");
-        System.Console.WriteLine($"La coleccion tiene {Coleccion.UniqueTermsCount} terminos unicos");
-        StreamWriter newFile = new StreamWriter("../Documentacion/DistintasPalabras.txt");
-        Coleccion._terminos = Coleccion._terminos.Order().ToArray();
-        foreach(string s in Coleccion.Terminos)newFile.WriteLine(s);
-        newFile.Close();
-        System.Console.WriteLine("-----END-----DEBUGGING------");
-        */
     }
 
     //Devuelve una copia de el documento en determinada posicion de la coleccion
