@@ -54,7 +54,7 @@ static class Snippet{
 
         Vector[] vectoresSubDocumentos = new Vector[subDocumentos.Count];
         for(int i =0;i<vectoresSubDocumentos.Length;++i)vectoresSubDocumentos[i] = new Vector(subDocumentos[i]);
-        double[] valor = Valorador.Valorar(new Vector(queryDoc),vectoresSubDocumentos);
+        double[] valor = Valorador.Valorar(new Vector(queryDoc),vectoresSubDocumentos,new Regla());
 
         //Mi snippet es el subdocumento de mejor score
         int posicionMejor = 0;

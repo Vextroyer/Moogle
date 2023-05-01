@@ -40,6 +40,14 @@ class Vector{
             if(index == null || !this._vector.ContainsKey(index))return 0;
             return this._vector[index];
         }
+        private set{
+            if(index == null || !this._vector.ContainsKey(index)){
+                System.Console.WriteLine($"Intento de asignar componente {index} a {value}");
+            }
+            else{
+                this._vector[index] = value;
+            }
+        }
     }
     //Devuelve la cantidad de palabras diferentes que componen al vector
     public int Dimension{
@@ -95,6 +103,13 @@ class Vector{
     }
     #endregion Operadores
 
+    #region Metodos
+
+    //Metodo auxiliar para mutiplicar una componente del vector por un valor que depende de la cantidad de asteriscos. Aplicar regla del *.
+    public void AplicarReglaShould(string index,double value){
+        this[index] *= value;
+    }
+
     override public string ToString(){
         string s = "[";
         foreach(var entry in this._vector){
@@ -103,4 +118,5 @@ class Vector{
         s+="]";
         return s;
     }
+    #endregion Metodos
 }

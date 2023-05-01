@@ -78,6 +78,12 @@ class Regla{
             return this._close.ToArray();
         }
     }
+    //Retorna verdadero si existe al menos una regla
+    public bool IsEmpty{
+        get{
+            return (this._not.Count > 0) || (this._must.Count > 0) || (this._should.Count > 0) || (this._close.Count > 0);
+        }
+    }
     #endregion Propiedades
 
     #region Metodos
@@ -121,5 +127,14 @@ class Regla{
 
         return toString;
     }
+    
+    //Metodos auxliares para determinar valores para las reglas should(*)  y close(~)
+
+    public static double CalcularShould(int cantidadDeAsteriscos){
+        //Si tiene un asterisco es el doble de importante en la consulta que los demas terminos.
+        //Si tiene k asteriscos, es k+1 veces mas importante en la consulta que los demas terminos.
+        return cantidadDeAsteriscos + 1;
+    }
+
     #endregion Metodos
 }

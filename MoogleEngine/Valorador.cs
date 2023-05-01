@@ -5,10 +5,13 @@ namespace MoogleEngine;
 **/
 static class Valorador{
     //Dado una consulta como vector y una coleccion de documentos como vectores computa un valor de similaridad
-    //de la consulta respecto a cada vector
-    public static double[] Valorar(Vector query,Vector[] documentos){
+    //de la consulta respecto a cada vector. De existir aplica reglas definidas por el usuario.
+    public static double[] Valorar(Vector query,Vector[] documentos,Regla regla){
         double[] score = new double[documentos.Length];
-        
+
+        //Aplica la regla should(*), aumenta la importancia relativa de dichos terminos.
+        foreach((string,int) v in regla.Should)query.AplicarReglaShould(v.Item1,Regla.CalcularShould(v.Item2));
+
         //Calcula el score de cada documento
         for(int i=0;i<documentos.Length;++i)score[i] = Similaridad(query, documentos[i]);
 

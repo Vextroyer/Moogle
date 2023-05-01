@@ -8,11 +8,13 @@ public static class Moogle
         Coleccion.Inicializar();
 
         //Procesar la consulta
-        query = Tokenizer.ProcesarQuery(query).Item1;
+        (string,Regla) auxiliar = Tokenizer.ProcesarQuery(query);
+        query = auxiliar.Item1;
+        // query = Tokenizer.ProcesarQuery(query).Item1;
 
         //Esta funcionalidad se puede encapsular
         //Determina el score de cada documento
-        double[] score = Valorador.Valorar(new Vector(new Documento(query,"Iam your query")),Coleccion.Vectores);
+        double[] score = Valorador.Valorar(new Vector(new Documento(query,"Iam your query")),Coleccion.Vectores,auxiliar.Item2);
 
         //Crea un resultado por cada documento
         SearchItem[] items = new SearchItem[Coleccion.Count];
