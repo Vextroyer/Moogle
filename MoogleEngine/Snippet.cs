@@ -15,7 +15,7 @@ static class Snippet{
     *texto son los terminos vecinos del temino de la consulta . Luego devuelvo el mejor de estos
     *documentos relativos a la consulta.
     **/
-    public static string GetSnippet(string query,Documento doc){
+    public static string GetSnippet(string query,Documento doc,Regla regla){
         string snippet = "";
         
         //De la query
@@ -52,7 +52,7 @@ static class Snippet{
         //Si no aparece ningun termino en este documento
         if(subDocumentos.Count == 0)return snippet;
 
-        double[] valor = Valorador.Valorar(queryDoc,subDocumentos.ToArray(),new Regla());
+        double[] valor = Valorador.Valorar(queryDoc,subDocumentos.ToArray(),regla);
 
         //Mi snippet es el subdocumento de mejor score
         int posicionMejor = 0;

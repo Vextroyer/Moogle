@@ -56,7 +56,7 @@ class Regla{
         }
     }
     //Crea esta regla a partir de una copia de otra. Si es para snippet omite los operadores !(not) y ^(must).
-    public Regla(Regla other, bool esParaSnippet = true):this(){
+    public Regla(Regla other, bool esParaSnippet = false):this(){
         //Si no es para snippet copia las reglas de los operadores !(not) y ^(must)
         if(!esParaSnippet){
             this._not = new List<string>(other.Not);
@@ -139,6 +139,11 @@ class Regla{
         return toString;
     }
     
+    //Devuelve una version de esta regla compatible con el calculo de snippet. Solo tiene operadores ~(close) y *(must).
+    public Regla ParaSnippet(){
+        return new Regla(this,true);
+    }
+
     //Metodos auxliares para determinar valores para las reglas should(*)  y close(~)
 
     public static double CalcularShould(int cantidadDeAsteriscos){

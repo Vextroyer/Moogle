@@ -19,7 +19,7 @@ public static class Moogle
         //Crea un resultado por cada documento
         SearchItem[] items = new SearchItem[Coleccion.Count];
         for(int i=0;i<items.Length;++i){
-            items[i] = new SearchItem(Coleccion.At(i).Titulo,Snippet.GetSnippet(query,Coleccion.At(i)),score[i]);
+            items[i] = new SearchItem(Coleccion.At(i).Titulo,Snippet.GetSnippet(query,Coleccion.At(i),auxiliar.Item2.ParaSnippet()),score[i]);
         }
 
         //Ordena los documentos basados en su score descendentemente
