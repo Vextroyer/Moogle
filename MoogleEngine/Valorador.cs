@@ -13,7 +13,32 @@ static class Valorador{
         foreach((string,int) v in regla.Should)query.AplicarReglaShould(v.Item1,Regla.CalcularShould(v.Item2));
 
         //Calcula el score de cada documento
-        for(int i=0;i<documentos.Length;++i)score[i] = Similaridad(query, documentos[i]);
+        for(int i=0;i<documentos.Length;++i){
+
+            #region Operadores
+            //El documento no es valido cuando no cumple con las reglas establecidas por el usuario:
+            //-Existe algun termino de la regla !(not) que aparece en el, pues ninguno debe aparecer.
+            //-Existe algun termino de la regla ^(must) que no aparece en el, pues todos deben aparecer.
+            bool esDocumentoValido = true;
+            //Si alguno de !(not) esta
+            foreach(string s in regla.Not){
+                if(Coleccion.At(i).Contiene(s)){
+                    esDocumentoValido = false;
+                    break;
+                }
+            }
+            //Si algunos de ^(must) no esta
+            foreach(string s in regla.Must){
+                if(Coleccion.At(i).NoContiene(s)){
+                    esDocumentoValido = false;
+                    break;
+                }
+            }
+            if(!esDocumentoValido)continue;
+            #endregion Operadores
+
+            score[i] = Similaridad(query,documentos[i]);
+        }
 
         return score;
     }
