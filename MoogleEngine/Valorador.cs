@@ -13,8 +13,8 @@ static class Valorador{
 
         double[] score = new double[documentos.Length];
 
-        //Aplica la regla should(*), aumenta la importancia relativa de dichos terminos.
-        foreach((string,int) v in regla.Should)vectorQuery.AplicarReglaShould(v.Item1,Regla.CalcularShould(v.Item2));
+        //Aplica el operador *(should), aumenta la importancia relativa de dichos terminos.
+        foreach((string,int) v in regla.Should)vectorQuery.AplicarOperador(v.Item1,Regla.CalcularShould(v.Item2));
 
         //Calcula el score de cada documento
         for(int i=0;i<documentos.Length;++i){
@@ -39,6 +39,19 @@ static class Valorador{
                 }
             }
             if(!esDocumentoValido)continue;
+
+            //Aplica el operador ~(close)
+            foreach((string,string) v in regla.Close){
+                string a = v.Item1;
+                string b = v.Item2;
+                //Determino la menor distancia de los terminos en el documento
+                int cercania = documentos[i].Cercania(a,b);
+                if(cercania == -1)continue;//Alguno no aparece
+                //Aumenta el valor relativo a ambos terminos en dependencia de su cercania.
+                vectorDocumento[i].AplicarOperador(a,Regla.CalcularClose(cercania));
+                vectorDocumento[i].AplicarOperador(b,Regla.CalcularClose(cercania));
+            }
+
             #endregion Operadores
 
             score[i] = Similaridad(vectorQuery,vectorDocumento[i]);

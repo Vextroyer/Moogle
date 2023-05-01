@@ -122,6 +122,45 @@ public class Documento{
     public bool NoContiene(string termino){
         return !Contiene(termino);
     }
+    //Determina la menor distancia entre alguna aparicion de estos terminos en el documento o -1 si alguno no aparece
+    public int Cercania(string terminoA,string terminoB){
+        if(this.NoContiene(terminoA) || this.NoContiene(terminoB))return -1;
+        //Ambos aparecen
+        
+        //Determino las posiciones en el texto donde aparecen
+        //Tomo las posiciones en termino donde aparece -> cada una de esta posiciones tiene asociada una posicion en texto -> tomo esa
+        
+        int[] aparicionesDeA = this._contenido[terminoA].ToArray();
+        for(int i=0;i<aparicionesDeA.Length;++i)aparicionesDeA[i] = this._posicionEnTexto[aparicionesDeA[i]];
+
+        int[] aparicionesDeB = this._contenido[terminoB].ToArray();
+        for(int i=0;i<aparicionesDeB.Length;++i)aparicionesDeB[i] = this._posicionEnTexto[aparicionesDeB[i]];
+
+        //Ambos arreglos estan ordenados ascendentemente por la forma en que se crean durante la creacion del documento
+        int cercania = int.MaxValue;//valor maximo porque va a disminuir
+        int aPuntero = 0;//Para moverse por las apariciones de A
+        int bPuntero = 0;//Para moverser por la apariciones de B
+        while(aPuntero < aparicionesDeA.Length && bPuntero < aparicionesDeB.Length){
+            int distancia = Math.Abs(aparicionesDeA[aPuntero] - aparicionesDeB[bPuntero]);
+            cercania = Math.Min(cercania,distancia);
+            //Debo mover el puntero que contenga el menor valor, porque asi su valor aumentara debido a la monotonia creciente
+            //de los arreglos, y solo asi es posible que la diferencia disminuya, si aumento el de mayor valor, la diferencia
+            //necesariamente aumentara.
+            if(aparicionesDeA[aPuntero] <= aparicionesDeB[bPuntero])++aPuntero;
+            else ++bPuntero;
+        }
+        
+        // for(int i=0;i<aparicionesDeA.Length;++i){
+        //     for(int j=0;j<aparicionesDeB.Length;++j){
+        //         int distancia = Math.Abs(aparicionesDeA[i] - aparicionesDeB[i]);
+        //         if(distancia < cercania){
+        //             cercania = distancia;
+        //         }
+        //     }
+        // }
+
+        return cercania;
+    }
 
     #endregion Metodos
 }

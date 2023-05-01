@@ -105,8 +105,8 @@ class Vector{
 
     #region Metodos
 
-    //Metodo auxiliar para mutiplicar una componente del vector por un valor que depende de la cantidad de asteriscos. Aplicar regla del *.
-    public void AplicarReglaShould(string index,double value){
+    //Metodo auxiliar para mutiplicar una componente del vector por un valor: Aplicar operador *(should) y ~(close)
+    public void AplicarOperador(string index,double value){
         this[index] *= value;
     }
 

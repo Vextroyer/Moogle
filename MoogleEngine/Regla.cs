@@ -152,5 +152,24 @@ class Regla{
         return cantidadDeAsteriscos + 1;
     }
 
+    public static double CalcularClose(int cercania){
+        if(cercania <= 0)return 1;//No modifica el valor
+        //Aplicar la formula 1 + (B / (cercania - A)) donde:
+        //A , B son parametros
+        //cercania siempre es un numero natural. Garantizado arriba.
+        //Esta funcion inversamente proporcional aumenta mientras la cercania disminuye y disminuye mientras la cercania
+        //aumenta. Justamente el efecto deseado.
+        //Experimente con distintos valores de cercania , A y B para entender completamente.
+        //El sumando 1 garantiza que el retorno de la funcion siempre sea mayor que 1. Haciendo que documentos donde aparezcan
+        //ambas palabras tengan mayor relevancia, auqnue este efecto no es notable para valores grandes de cercania.
+
+        double A = 0.9;
+        double B = 1500;
+
+        return 1 + (B / (cercania - A));
+        //Los valores actuales de A y B son son establecidos experimentalmente para que en la consulta
+        //algoritmo ~ Bernoulli Ciencia de la Computacion aparezca como primer resultado.
+    }
+
     #endregion Metodos
 }
