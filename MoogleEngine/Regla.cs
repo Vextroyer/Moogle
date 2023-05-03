@@ -28,6 +28,8 @@ class Regla{
     //Crea un conjunto de reglas a partir de un string que contiene terminos y operadores
     public Regla(string[] tokens):this(){
         //Antes de entrar aqui llama al constructor por defecto
+
+        //Primera pasada, aplica operadores unarios(!,^,*)
         for(int i=0;i<tokens.Length;++i){
             System.Console.WriteLine(tokens[i]);
             if(EsTermino(tokens[i]))continue;//Si no es un termino
@@ -48,11 +50,15 @@ class Regla{
                     }
                     if(i + 1 < tokens.Length && EsTermino(tokens[i+1]))this._should.Add((tokens[i + 1],cantidadDeAsteriscos));
                     break;
-
-                case "~":
-                    if(i - 1 >= 0 && i + 1 < tokens.Length && EsTermino(tokens[i - 1]) && EsTermino(tokens[i + 1]))this._close.Add((tokens[i-1],tokens[i+1]));
-                    break;
             }
+        }
+
+        List<string> terminosYCercania = new List<string>();//Lista que solo contiene terminos y operadores de cercania.Para aplicar el operador de cercania con una precedencia de 2
+        foreach(string s in tokens)if(EsTermino(s) || s == "~")terminosYCercania.Add(s);
+        //2da pasada. Aplica el operador cercania.
+        for(int i=0;i<terminosYCercania.Count;++i){
+            if(terminosYCercania[i] == "~" && i - 1 >= 0 && i + 1 < terminosYCercania.Count && EsTermino(terminosYCercania[i -1]) && EsTermino(terminosYCercania[i+1]))
+                this._close.Add((terminosYCercania[i - 1],terminosYCercania[i + 1]));
         }
     }
     //Crea esta regla a partir de una copia de otra. Si es para snippet omite los operadores !(not) y ^(must).
