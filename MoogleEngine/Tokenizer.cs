@@ -56,6 +56,9 @@ static class Tokenizer{
     public static (string,Regla) ProcesarQuery(string query){
         //Determina los diferentes terminos
         string[] terminos = Tokenizer.Tokenize(query);
+
+        //Actualiza la sugerencia
+        Sugerencia.Actualizar(terminos);
         
         //Determinar las operaciones realizadas sobre los terminos de la consulta
         Regla r = new Regla(terminos);

@@ -48,6 +48,9 @@ static class Coleccion{
             }
         }
 
+        //Comparte una copia de las distintas palabras que conforman la coleccion con la clase Sugerencia
+        Sugerencia.Inicializar(_terminosYApariciones.Keys.ToArray());
+
         Coleccion.Inicializada = true;
     }
 

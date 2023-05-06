@@ -29,6 +29,6 @@ public static class Moogle
         items = Depurador.Depurar(items);
         //Hasta aqui
 
-        return new SearchResult(items, query);
+        return new SearchResult(items, Sugerencia.Sugerir());
     }
 }
