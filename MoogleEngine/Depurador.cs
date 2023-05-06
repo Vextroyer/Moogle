@@ -24,6 +24,6 @@ class Depurador{
     }
     //Metodo auxiliar para determinar si un resultado es relevante basado en su score
     private static bool EsIrrelevante(SearchItem item){
-        return item.Score == 0;
+        return (item.Score == 0 || double.IsNaN(item.Score));
     }
 }

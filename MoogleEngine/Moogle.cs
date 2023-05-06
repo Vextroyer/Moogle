@@ -10,9 +10,7 @@ public static class Moogle
         //Procesar la consulta
         (string,Regla) auxiliar = Tokenizer.ProcesarQuery(query);
         query = auxiliar.Item1;
-        // query = Tokenizer.ProcesarQuery(query).Item1;
 
-        //Esta funcionalidad se puede encapsular
         //Determina el score de cada documento
         double[] score = Valorador.Valorar(new Documento(query,"Iam your query"),Coleccion.Documentos,auxiliar.Item2);
 
@@ -27,7 +25,6 @@ public static class Moogle
 
         //No muestres resultados irrelevantes en la busqueda
         items = Depurador.Depurar(items);
-        //Hasta aqui
 
         return new SearchResult(items, Sugerencia.Sugerir());
     }
