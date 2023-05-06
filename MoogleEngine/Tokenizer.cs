@@ -80,6 +80,9 @@ static class Tokenizer{
     *       1- cada simbolo ^ ! ~
     *       2- una secuencia finita de simbolos *
     *       3- una secuencia finita de letras o digitos
+    *   Los tokens se clasifican en dos tipos :
+    *       1-Operadores. Compuestos por los simbolos(! ^ ~ *)
+    *       2-Terminos. Compuestos por letras y digitos.
     **/
     private static string comodin = "/";//Caracter comodin, ningun caracter utilizable coincidira con el 
     public static string[] Tokenize(string texto){
@@ -114,24 +117,22 @@ static class Tokenizer{
     }
     //Metodo auxiliar para agregar un token a la lista
     private static void AddToken(List<string> tokens,string token){
-        if(IsValidToken(token))tokens.Add(token);
+        if(EsTokenValido(token))tokens.Add(token);
     }
     //Dado un token determina si es valido
-    private static bool IsValidToken(string token){
-        if(token == "!" || token == "^" || token == "~")return true;
-        if(token.First() == '*'){
-            foreach(char c in token){
-                if(c != '*')return false;
-            }
-            return true;
-        }
-        if(char.IsLetterOrDigit(token.First())){
-            foreach(char c in token){
-                if(!char.IsLetterOrDigit(c))return false;
-            }
-            return true;
-        }
+    private static bool EsTokenValido(string token){
+        if(EsOperador(token) || EsTermino(token))return true;
         return false;
+    }
+    //Dado un token determina si es un operador
+    public static bool EsOperador(string token){
+        if(token == "!" || token == "^" || token == "~" || token == "*")return true;
+        return false;
+    }
+    //Dado un token determina si es un termino.
+    public static bool EsTermino(string token){
+        foreach(char c in token)if(!char.IsLetterOrDigit(c))return false;//Contiene algun simbolo que no es letra o digito
+        return true;//Solo contiene letras o digitos.
     }
     /**
     *Realiza dos modificaciones sobre un texto
