@@ -67,7 +67,7 @@ static class Coleccion{
     }
     //Determina si un termino dado es StopWord en este documento
     public static bool EsStopWord(string termino){
-        //Considero como stopword algun los terminos que aparecen en mas del 75% de los documentos
+        //Considero como stopword algun los terminos que aparecen en al menos del 75% de los documentos
         return 4*EnCuantosDocumentosAparece(termino) >= 3 * Coleccion.Count;
     }
 }
