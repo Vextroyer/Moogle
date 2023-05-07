@@ -80,9 +80,8 @@ static class Tokenizer{
     /**
     *   Dado un texto devolver un listado de tokens (palabras y operadores).
     *   Un token es:
-    *       1- cada simbolo ^ ! ~
-    *       2- una secuencia finita de simbolos *
-    *       3- una secuencia finita de letras o digitos
+    *       1- cada simbolo ^ ! ~ *
+    *       2- una secuencia finita de letras o digitos
     *   Los tokens se clasifican en dos tipos :
     *       1-Operadores. Compuestos por los simbolos(! ^ ~ *)
     *       2-Terminos. Compuestos por letras y digitos.
