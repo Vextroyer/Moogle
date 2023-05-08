@@ -1,0 +1,35 @@
+Para ejecutar el proyecto :
+1-Crear en la carpeta moogle! una carpeta llamada "Content" en la que debe poner los documentos.
+2-Cada documento debe ser de extension ".txt" y su nombre debe ser algo como "	palabras_en_minusculas_separadas_por_guiones_bajos.txt"
+3-Abrir un terminal en la carpeta moggle!
+4-Ejecutar el comando “make dev”
+4a-De no tener la herramienta make ejecutar el comando “dotnet run --project MoogleServer”
+5-mientras presiona “Ctrl”  de clic donde dice “http://localhost:5285”, esto abrirá una página web en su navegador donde puede buscar.
+
+Funcionalidades del proyecto:
+-Realiza buenas búsquedas. No todas sus palabras son igual de relevantes, este moogle! reconoce las que si los son. Para buscar escriba en el cuadro de diálogo su consulta y de clic en el botón buscar.
+
+-Se muestran primero los resultados más relevantes para su búsqueda, así le es posible encontrar antes lo que le interesa, ahorrándose tiempo.
+
+-Para los más curiosos, decidimos mantener la lista de resultados completa, así puede analizar su búsqueda en un contexto más amplio y variado.
+
+-Con cada resultado se muestra un pedazo del texto para que conozca más acerca del contenido del mismo y pueda decidir que resultado elegir.
+
+-Ignora archivos vacíos,o que no contengan números ni letras, porque no aportan nada a las consultas del usuario.
+
+-Ahora es posible influenciar su búsqueda a través de varios símbolos, que llamamos operadores.
+Pruebe a buscar “Fama y fortuna”. 
+.Utilice  ^  delante de las palabras que quiere que aparezcan en todos los resultados: “Fama y ^fortuna”. 
+.Utilice ! delante de las palabras que quiere que no aparezcan en ningún resultado “Fama y !fortuna”.
+.Utilice * delante de las palabras  que considere mas importantes, se priorizaran los resultados que contengan estas palabras. Mientras mas * mas importancia . “Fama y ***fortuna”
+.Utilice ~ entre dos palabras que quiere que aparezcan cerca. Se priorizaran los resultados donde aparezcan cerca. “algoritmo ~ bernoulli”
+
+También hemos hecho posible la combinación de operadores, a través de la precedencia. Por ejemplo, pruebe a consultar “alfa  beta”, luego “^alfa ^beta”, y por ultimo “^alfa ~ ^beta”.
+La regla es simple de recordar : 
+1-Primero se aplican los operadores ! ^ *, y solo el más cercano a la palabra. Por ejemplo la consulta “!!^**^perro ~ !!*****gato”,  es interpretada como “^perro ~ *****gato”. Recordar que una secuencia de * se mantiene juntos.
+2-Luego se aplica el operador cercanía.
+Esto posibilita consultas del tipo “^alfa ~ ^beta”: Muestra solo resultados donde estén alfa y beta, y prioriza en los que estén cerca.
+
+No existe un comportamiento definido para consultas contradictorias: “^ser o no !ser”. Aplicar estos operadores mutuamente exclusivos a un mismo término no tiene un comportamiento definido, sea razonable.
+
+-Consideramos que usted es una persona y tiene derecho a equivocarse. Por eso ante cualquier eventualidad tipográfica le sugerimos una alternativa. Traducimos la consulta sin sentido “la casq” como “la casa”. El muy común “algortmo” como “algoritmo”. Usted debe copiar la sugerencia en el buscador y volver a buscar.
