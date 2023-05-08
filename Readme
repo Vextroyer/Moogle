@@ -1,7 +1,7 @@
 Para ejecutar el proyecto :
-1-Crear en la carpeta moogle! una carpeta llamada "Content" en la que debe poner los documentos.
+1-Crear en la carpeta del proyecto una carpeta llamada "Content" en la que debe poner los documentos.
 2-Cada documento debe ser de extension ".txt" y su nombre debe ser algo como "	palabras_en_minusculas_separadas_por_guiones_bajos.txt"
-3-Abrir un terminal en la carpeta moggle!
+3-Abrir un terminal en la carpeta del proyecto
 4-Ejecutar el comando “make dev”
 4a-De no tener la herramienta make ejecutar el comando “dotnet run --project MoogleServer”
 5-mientras presiona “Ctrl”  de clic donde dice “http://localhost:5285”, esto abrirá una página web en su navegador donde puede buscar.
