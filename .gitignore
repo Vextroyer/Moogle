@@ -3,9 +3,10 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
+## Archivos y directorios agregados por mi 
 Documentacion
 Content
-
+##
 # User-specific files
 *.rsuser
 *.suo
