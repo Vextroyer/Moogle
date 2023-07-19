@@ -6,6 +6,13 @@
 ## Archivos y directorios agregados por mi 
 Documentacion
 Content
+
+#Ignora archivos auxiliares compilados por latex
+*.aux
+*.nav
+*.out
+*.toc
+
 ##
 # User-specific files
 *.rsuser
