@@ -13,6 +13,18 @@ function Help(){
     echo "                              en la ejecucion del proyecto"
     echo "  help                        Muestra este mensaje"
 }
+
+#Determina si un programa existe, es necesario pasarle exactamente un parametro que es el nombre del programa
+function Exists(){
+    if ! command -v $1 &> /dev/null
+    then
+        #No existe
+        return 1
+    else
+        #Existe
+        return 0
+    fi
+}
 #Fin de definiciones de funciones
 
 # El codigo "$#" devuelve la cantidad de argumentos que se le pasaron al script
