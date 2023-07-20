@@ -27,6 +27,18 @@ function Exists(){
 }
 #Fin de definiciones de funciones
 
+#Para obtener el directorio donde esta el script, de https://stackoverflow.com/questions/4774054/reliable-way-for-a-bash-script-to-get-the-full-path-to-itself
+#Directorio donde esta el script
+scriptDirectory="$( cd -- "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
+
+#Directorio principal donde se encuentra el moogle, debe ser el directorio que contiene a SCRIPTPATH
+moogleDirectory="$scriptDirectory/.."
+#Ver, https://stackoverflow.com/questions/3915040/how-to-obtain-the-absolute-path-of-a-file-via-shell-bash-zsh-sh
+moogleDirectory=`realpath $moogleDirectory`
+
+#Directorio desde donde se llamo al script originalmente
+originalDirectory=$PWD
+
 # El codigo "$#" devuelve la cantidad de argumentos que se le pasaron al script
 # El codigo "$1" devuelve el primer argumento
 # El codigo "$2" devuelve el segundo argumento
@@ -45,7 +57,45 @@ then
     #echo "Tiene 1";
     case $1 in
         run)
-            echo Run
+            #echo Run
+            if Exists dotnet; then
+                #Variable para conocer el estado de ejecucion 
+                #0 , OK
+                #1 , Error
+                status=0
+                
+                #pwd
+                #Cambia al directorio raiz del moogle
+                echo "Cambiando al directorio principal del moogle"
+                cd $moogleDirectory
+                echo "Usando dotnet"
+                if dotnet build; then
+                    #Do nothing
+                    status=0
+                else
+                    #The build fails
+                    status=1
+                fi
+                if dotnet run --project MoogleServer; then
+                    #do nothing
+                    status=0
+                else
+                    #The run fails
+                    status=1
+                fi
+                #pwd
+                #Cambia al directorio original desde donde se invoco el script
+                echo "Regresando al directorio original"
+                cd $originalDirectory
+                #pwd
+
+                if [[ $status -eq 1 ]]; then
+                    echo "Quizas instalando dotnet 7 se solucionen sus errores."
+                fi
+            else
+                echo "Imposible ejecutar, dotnet no fue encontrado"
+                exit
+            fi
         ;;
         report)
             echo Report
