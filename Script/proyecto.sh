@@ -51,7 +51,7 @@ function Exists(){
 
 #Comando report
 function Report(){
-    #Cambiar al directorio donde esta el informe, no encontre opcion para decirle a pdflatex donde bucscar las imagenes
+    #Cambiar al directorio donde esta el informe, no encontre opcion para decirle a pdflatex donde buscar las imagenes
     echo "En: $PWD"
     echo "Cambiando al directorio donde se encuentra el informe"
     cd $reportDirectory
@@ -102,6 +102,29 @@ function Run(){
         echo "Imposible ejecutar, dotnet no fue encontrado"
         exit
     fi
+}
+
+#Comando slides
+function Slides(){
+    #Cambiar al directorio donde esta la presentacion, no encontre opcion para decirle a pdflatex donde buscar las imagenes
+    echo "En: $PWD"
+    echo "Cambiando al directorio donde se encuentra la presentacion"
+    cd $slideDirectory
+    echo "En: $PWD"
+    echo ""
+
+    if Exists pdflatex; then
+        pdflatex -interaction=nonstopmode -output-directory=$slideDirectory -shell-escape $slideFile
+        pdflatex -interaction=nonstopmode -output-directory=$slideDirectory -shell-escape $slideFile
+    else
+        echo "No se encontro pdflatex"
+    fi
+
+    echo ""
+    echo "En: $PWD"
+    echo "Cambiando al directorio original"
+    cd $originalDirectory
+    echo "En: $PWD"
 }
 
 #Muestra informacion relevante para la ejecucion del script
@@ -177,6 +200,10 @@ case $1 in
     
     "rutas")
         Rutas
+    ;;
+
+    "slides")
+        Slides
     ;;
 
     "troubleshoot")
