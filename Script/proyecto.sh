@@ -1,6 +1,17 @@
 #!/bin/bash
 
 #Definiciones de funciones
+
+#Imprime variables importantes para este script. Especificamente,la ruta desde donde se esta ejectuando el script,
+#la ruta donde esta ubicado el script, la ruta del directorio raiz del proyecto moogle (esta contiene al directorio que contiene al
+#script)
+function Rutas(){
+    echo "Rutas importantes"
+    echo "Ruta de llamada       $originalDirectory"
+    echo "Ruta al script        $scriptDirectory"
+    echo "Ruta al moogle        $moogleDirectory"
+}
+
 function Help(){
     echo "uso: proyecto.sh <opcion>"
     echo "Las opciones disponibles son:"
@@ -93,6 +104,10 @@ originalDirectory=$PWD
 
 #FIN VARIABLES
 
+#INICIO SCRIPT
+
+Rutas
+
 # cantidadDeArgumentos < 1 || cantidadDeArgumentos > 2
 if [[ ($# -lt 1) || ($# -gt 2) ]]
 then
@@ -141,3 +156,5 @@ else
         ;;
     esac
 fi
+
+#FIN SCRIPT
