@@ -45,24 +45,25 @@ function Exists(){
 #Comando run
 function Run(){
     #echo Run
+
+    local status=0
+
     if Exists dotnet; then
         #Variable para conocer el estado de ejecucion 
         #0 , OK
         #1 , Error
         status=0
                 
-        #pwd
         #Cambia al directorio raiz del moogle
-        echo "Cambiando al directorio principal del moogle"
+        echo "En: $PWD"
+        echo "Cambiando al directorio del moogle"
         cd $moogleDirectory
+        echo "En: $PWD"
+        echo ""
+
+
         echo "Usando dotnet"
-        if dotnet build; then
-            #Do nothing
-            status=0
-        else
-            #The build fails
-            status=1
-        fi
+        #Compilacion y Ejecucion
         if dotnet run --project MoogleServer; then
             #do nothing
             status=0
@@ -70,19 +71,23 @@ function Run(){
             #The run fails
             status=1
         fi
-            #pwd
-            #Cambia al directorio original desde donde se invoco el script
-            echo "Regresando al directorio original"
-            cd $originalDirectory
-            #pwd
+
+
+        #Cambia al directorio original desde donde se invoco el script
+        echo ""
+        echo "En: $PWD"
+        echo "Regresando al directorio original"
+        cd $originalDirectory
+        echo "En: $PWD"
+        echo ""
 
         if [[ $status -eq 1 ]]; then
-            echo "Quizas instalando dotnet 7 se solucionen sus errores."
+            echo "Este proyecto ha sido creado y probado en dotent 7. Quizas instalando dotnet 7 se solucionen sus errores."
         fi
-        else
-            echo "Imposible ejecutar, dotnet no fue encontrado"
-            exit
-        fi
+    else
+        echo "Imposible ejecutar, dotnet no fue encontrado"
+        exit
+    fi
 }
 #Fin de definiciones de funciones
 
@@ -115,6 +120,9 @@ case $1 in
     ;&
     help)
         Help
+    ;;
+    run)
+        Run
     ;;
     *)
         #Comando desconocido
