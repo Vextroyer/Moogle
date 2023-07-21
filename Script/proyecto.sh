@@ -191,6 +191,73 @@ function Troubleshoot(){
     echo "                latex"
     echo "  pwd           Para establecer las rutas que usaran otros comandos"
     echo "  realpath      Para establecer las rutas que usaran otros comandos"
+    echo "  xdg-open      Para abrir archivos con la aplicacion por defecto"
+    echo ""
+}
+
+#Funcion clean
+#Debe borrar lo siguiente
+#Generado por la compilacion del moogle: -MoogleEngine/obj
+#                                        -MoogleEngine/bin
+#                                        -MoogleServer/obj
+#                                        -MoogleServer/bin
+#Todo archivo en el directorio Informe que no sea Informe.tex y el directorio Imagenes
+#Todo archivo en el directorio Presentacion que no sea Presentacion.tex y el directorio Imagenes
+#Ayuda de https://stackoverflow.com/questions/2437452/how-to-get-the-list-of-files-in-a-directory-in-a-shell-script
+function Clean(){
+    #Compilador C#
+    echo "Borrando archivos generados por el compilador de C# ..."
+    echo ""
+    rm -r -f -d -v "$moogleDirectory/MoogleEngine/bin"
+    rm -r -f -d -v "$moogleDirectory/MoogleEngine/obj"
+    rm -r -f -d -v "$moogleDirectory/MoogleServer/bin"
+    rm -r -f -d -v "$moogleDirectory/MoogleServer/obj"
+    echo ""
+    echo "Hecho."
+    echo ""
+
+    #Informe
+    echo ""
+    echo "Borrando archivos generados en la compilacion del informe"
+    echo ""
+    #Borra todos los archivos excepto el directorio Imagenes y el archivo Informe.tex
+    for file in "$reportDirectory/"*
+    do
+        case $file in
+            *"Informe.tex")
+            ;&
+            *"Imagenes")
+                #Do nothing
+            ;;
+            *)
+                rm -f -v $file
+            ;;
+        esac
+    done
+    echo ""
+    echo "Hecho"
+    echo ""
+
+    #Presentacion
+    echo ""
+    echo "Borrando archivos generados en la compilacion de la presentacion"
+    echo ""
+    #Borra todos los archivos excepto el directorio Imagenes y el archivo Presentacion.tex
+    for file in "$slideDirectory/"*
+    do
+        case $file in
+            *"Presentacion.tex")
+            ;&
+            *"Imagenes")
+                #Do nothing
+            ;;
+            *)
+                rm -f -v $file
+            ;;
+        esac
+    done
+    echo ""
+    echo "Hecho"
     echo ""
 }
 #Fin de definiciones de funciones
@@ -240,6 +307,10 @@ case $1 in
     ;&
     "help")
         Help
+    ;;
+
+    "clean")
+        Clean
     ;;
 
     "hidden")
