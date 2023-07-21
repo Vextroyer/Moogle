@@ -191,6 +191,7 @@ function Troubleshoot(){
     echo "                latex"
     echo "  pwd           Para establecer las rutas que usaran otros comandos"
     echo "  realpath      Para establecer las rutas que usaran otros comandos"
+    echo "  rm            Para remover archivos y directorios"
     echo "  xdg-open      Para abrir archivos con la aplicacion por defecto"
     echo ""
 }
