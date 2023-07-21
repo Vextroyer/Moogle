@@ -110,7 +110,16 @@ originalDirectory=$PWD
 # El codigo "$2" devuelve el segundo argumento
 
 case $1 in
+    "")
+        #Continua ejecutando el proximo caso
+    ;&
     help)
+        Help
+    ;;
+    *)
+        #Comando desconocido
+        echo "Comando desconocido. Mostrando la ayuda. "
+        echo ""
         Help
     ;;
 esac
