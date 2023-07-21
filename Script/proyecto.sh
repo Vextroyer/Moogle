@@ -11,6 +11,10 @@ function Rutas(){
     echo "Ruta al script                $scriptDirectory"
     echo "Ruta al moogle                $moogleDirectory"
     echo "Ruta a MoogleServer.csproj    $projectFile"
+    echo "Ruta al Informe               $reportDirectory"
+    echo "Informe                       $reportFile"
+    echo "Ruta a la Presentacion        $slideDirectory"
+    echo "Presentacion                  $slideFile"
 }
 
 function Help(){
@@ -43,6 +47,29 @@ function Exists(){
         #Existe
         return 0
     fi
+}
+
+#Comando report
+function Report(){
+    #Cambiar al directorio donde esta el informe, no encontre opcion para decirle a pdflatex donde bucscar las imagenes
+    echo "En: $PWD"
+    echo "Cambiando al directorio donde se encuentra el informe"
+    cd $reportDirectory
+    echo "En: $PWD"
+    echo ""
+
+    if Exists pdflatex; then
+        pdflatex -interaction=nonstopmode -output-directory=$reportDirectory -shell-escape $reportFile
+        pdflatex -interaction=nonstopmode -output-directory=$reportDirectory -shell-escape $reportFile
+    else
+        echo "No se encontro pdflatex"
+    fi
+
+    echo ""
+    echo "En: $PWD"
+    echo "Cambiando al directorio original"
+    cd $originalDirectory
+    echo "En: $PWD"
 }
 
 #Comando run
@@ -85,6 +112,8 @@ function Troubleshoot(){
     echo "  dirname       Para establecer las rutas que usaran otros comandos"
     echo "  dotnet        Para compilar y ejecutar el proyecto. Se recomienda la version 7.0"
     echo "  echo          Para escribir esto (^_^)"
+    echo "  pdflatex      Para compilar y generar pdf a partir de archivos tex escritos en"
+    echo "                latex"
     echo "  pwd           Para establecer las rutas que usaran otros comandos"
     echo "  realpath      Para establecer las rutas que usaran otros comandos"
     echo ""
@@ -109,6 +138,15 @@ projectFile="$moogleDirectory/MoogleServer/MoogleServer.csproj"
 #Directorio desde donde se llamo al script originalmente
 originalDirectory=$PWD
 
+#Directorio que contiene el informe, debe estar dentro del directorio principal del moogle
+reportDirectory="$moogleDirectory/Informe"
+#Archivo del informe
+reportFile="$reportDirectory/Informe.tex"
+#Directorio que contiene la presentacion, debe estar dentro del directorio principal del moogle
+slideDirectory="$moogleDirectory/Presentacion"
+#Archivo de la presentacion
+slideFile="$slideDirectory/Presentacion.tex"
+
 #FIN VARIABLES
 
 #INICIO SCRIPT
@@ -127,6 +165,10 @@ case $1 in
 
     "hidden")
         echo "Este es un comando oculto que probablemente solo descubriran los que lean el codigo fuente del script ;)"
+    ;;
+
+    "report")
+        Report
     ;;
 
     "run")
