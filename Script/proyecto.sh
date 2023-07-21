@@ -27,6 +27,8 @@ function Help(){
     echo "  show_report [tool]          Mostrar el informe usando el comando dado en tool, si no usa uno por defecto"
     echo "  show_slides [tool]          Mostrar la presentacion usando el comando dado en tool,si no usa uno por defecto"
     echo "  slides                      Compilar y generar el pdf de la presentación a partir del archivo en latex"
+    echo "  troubleshoot                Muestra informacion que puede servir para prevenir y corregir errores en la"
+    echo "                              ejecucion del script"
     echo ""
 }
 
