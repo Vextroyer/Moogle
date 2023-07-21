@@ -137,6 +137,10 @@ case $1 in
         Help
     ;;
 
+    "hidden")
+        echo "Este es un comando oculto que probablemente solo descubriran los que lean el codigo fuente del script ;)"
+    ;;
+
     "run")
         Run
     ;;
