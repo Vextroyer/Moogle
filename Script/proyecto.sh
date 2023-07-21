@@ -104,6 +104,58 @@ function Run(){
     fi
 }
 
+#Comando auxiliar para abrir un archivo  o url utilizando la aplicacion por defecto del sistema, recibe como parametro la ruta del archivo
+#Basado en: https://stackoverflow.com/questions/394230/how-to-detect-the-os-from-a-bash-script
+#           https://www.enmimaquinafunciona.com/pregunta/25334/comando-equivalente-a-linux-para-el-comando-quotabrirquot-en-macwindows
+function OpenDefault(){
+    echo "Abriendo con aplicacion por defecto"
+    case "$OSTYPE" in
+        "darwin"*)
+            open $1
+        ;; 
+        
+        "linux-gnu"*)
+            xdg-open $1
+        ;;
+    esac
+}
+
+#Comando show_report
+function ShowReport(){
+    #Si no existe compilalo
+    if [[ ! -f $reportPdf ]]; then
+        Report
+    fi
+
+    #Muestralo
+    if [[ ! $1 = "" ]]; then
+        #Mostrando con la aplicacion proporcionada
+        echo "Mostrando pdf con $1"
+        $1 $reportPdf
+    else
+        #Mostrando con la aplicacion por defecto
+        OpenDefault $reportPdf
+    fi
+}
+
+#Comando show_slides
+function ShowSlides(){
+    #Si no existe compilalo
+    if [[ ! -f $slidePdf ]]; then
+        Slides
+    fi
+
+    #Muestralo
+    if [[ ! $1 = "" ]]; then
+        #Mostrando con la aplicacion proporcionada
+        echo "Mostrando pdf con $1"
+        $1 $slidePdf
+    else
+        #Mostrando con la aplicacion por defecto
+        OpenDefault $slidePdf
+    fi
+}
+
 #Comando slides
 function Slides(){
     #Cambiar al directorio donde esta la presentacion, no encontre opcion para decirle a pdflatex donde buscar las imagenes
@@ -163,12 +215,16 @@ originalDirectory=$PWD
 
 #Directorio que contiene el informe, debe estar dentro del directorio principal del moogle
 reportDirectory="$moogleDirectory/Informe"
-#Archivo del informe
+#Archivo tex del informe
 reportFile="$reportDirectory/Informe.tex"
+#Pdf del informe
+reportPdf="$reportDirectory/Informe.pdf"
 #Directorio que contiene la presentacion, debe estar dentro del directorio principal del moogle
 slideDirectory="$moogleDirectory/Presentacion"
-#Archivo de la presentacion
+#Archivo tex de la presentacion
 slideFile="$slideDirectory/Presentacion.tex"
+#Pdf de la presentacion
+slidePdf="$slideDirectory/Presentacion.pdf"
 
 #FIN VARIABLES
 
@@ -200,6 +256,16 @@ case $1 in
     
     "rutas")
         Rutas
+    ;;
+
+    "show_report")
+        #El segundo argumento de debe ser el programa usado para abrir el pdf
+        ShowReport $2
+    ;;
+
+    "show_slides")
+        #El segundo argumento de debe ser el programa usado para abrir el pdf
+        ShowSlides $2
     ;;
 
     "slides")
