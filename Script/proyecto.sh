@@ -56,18 +56,10 @@ function Run(){
         #0 , OK
         #1 , Error
         status=0
-                
-        #Cambia al directorio raiz del moogle
-        echo "En: $PWD"
-        echo "Cambiando al directorio del moogle"
-        cd $moogleDirectory
-        echo "En: $PWD"
-        echo ""
-
 
         echo "Usando dotnet"
         #Compilacion y Ejecucion
-        if dotnet run --project MoogleServer; then
+        if dotnet run --project $projectFile; then
             #do nothing
             status=0
         else
@@ -75,18 +67,10 @@ function Run(){
             status=1
         fi
 
-
-        #Cambia al directorio original desde donde se invoco el script
-        echo ""
-        echo "En: $PWD"
-        echo "Regresando al directorio original"
-        cd $originalDirectory
-        echo "En: $PWD"
-        echo ""
-
         if [[ $status -eq 1 ]]; then
             echo "Este proyecto ha sido creado y probado en dotent 7. Quizas instalando dotnet 7 se solucionen sus errores."
         fi
+
     else
         echo "Imposible ejecutar, dotnet no fue encontrado"
         exit
