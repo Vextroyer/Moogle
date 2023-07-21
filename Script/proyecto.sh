@@ -14,17 +14,20 @@ function Rutas(){
 
 function Help(){
     echo "uso: proyecto.sh <opcion>"
+    echo "Los parametros <arg> son necesarios, los parametros [arg] son opcionales."
+    echo ""
     echo "Las opciones disponibles son:"
-    echo "  run                         Ejecutar el proyecto"
-    echo "  report                      Compilar y generar el pdf del informe a partir del archivo en latex"
-    echo "  slides                      Compilar y generar el pdf de la presentación a partir del archivo en latex"
-    echo "  show_report [tool]          Mostrar el informe usando el comando dado en tool, si no usa uno por defecto"
-    echo "  show_slides [tool]          Mostrar la presentacion usando el comando dado en tool,si no usa uno por defecto"
+    echo ""
     echo "  clean                       Elimina ficheros generados en la compilacion de la presentacion, el informe, y  "
     echo "                              en la ejecucion del proyecto"
     echo "  help                        Muestra este mensaje"
+    echo "  report                      Compilar y generar el pdf del informe a partir del archivo en latex"
+    echo "  run                         Ejecutar el proyecto"
+    echo "  rutas                       Muestra rutas importantes usadas en la ejecucion de este script"
+    echo "  show_report [tool]          Mostrar el informe usando el comando dado en tool, si no usa uno por defecto"
+    echo "  show_slides [tool]          Mostrar la presentacion usando el comando dado en tool,si no usa uno por defecto"
+    echo "  slides                      Compilar y generar el pdf de la presentación a partir del archivo en latex"
     echo ""
-    echo "Los parametros <arg> son necesarios, los parametros [arg] son opcionales."
 }
 
 #Determina si un programa existe, es necesario pasarle exactamente un parametro que es el nombre del programa
@@ -105,5 +108,11 @@ originalDirectory=$PWD
 # El codigo "$#" devuelve la cantidad de argumentos que se le pasaron al script
 # El codigo "$1" devuelve el primer argumento
 # El codigo "$2" devuelve el segundo argumento
+
+case $1 in
+    help)
+        Help
+    ;;
+esac
 
 #FIN SCRIPT
