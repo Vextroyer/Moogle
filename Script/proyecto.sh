@@ -91,6 +91,19 @@ function Run(){
         exit
     fi
 }
+
+#Muestra informacion relevante para la ejecucion del script
+function Troubleshoot(){
+    echo "  Este script requiere de los siguientes comandos para funcionar: "
+    echo "  cd            Para establecer las rutas que usaran otros comandos"
+    echo "  command       Para determinar la existencia o no de los comandos"
+    echo "  dirname       Para establecer las rutas que usaran otros comandos"
+    echo "  dotnet        Para compilar y ejecutar el proyecto. Se recomienda la version 7.0"
+    echo "  echo          Para escribir esto (^_^)"
+    echo "  pwd           Para establecer las rutas que usaran otros comandos"
+    echo "  realpath      Para establecer las rutas que usaran otros comandos"
+    echo ""
+}
 #Fin de definiciones de funciones
 
 #VARIABLES
@@ -120,12 +133,18 @@ case $1 in
     "")
         #Continua ejecutando el proximo caso
     ;&
-    help)
+    "help")
         Help
     ;;
-    run)
+
+    "run")
         Run
     ;;
+
+    "troubleshoot")
+        Troubleshoot
+    ;;
+
     *)
         #Comando desconocido
         echo "Comando desconocido. Mostrando la ayuda. "
