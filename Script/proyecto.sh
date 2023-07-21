@@ -72,13 +72,16 @@ function Run(){
 }
 #Fin de definiciones de funciones
 
+#VARIABLES
+
 #Para obtener el directorio donde esta el script, de https://stackoverflow.com/questions/4774054/reliable-way-for-a-bash-script-to-get-the-full-path-to-itself
 #Directorio donde esta el script
 scriptDirectory="$( cd -- "$(dirname "$0")" >/dev/null 2>&1 ; pwd -P )"
 
-#Directorio principal donde se encuentra el moogle, debe ser el directorio que contiene a SCRIPTPATH
+#Directorio principal donde se encuentra el moogle, debe ser el directorio padre del directorio que contiene al script
 moogleDirectory="$scriptDirectory/.."
 #Ver, https://stackoverflow.com/questions/3915040/how-to-obtain-the-absolute-path-of-a-file-via-shell-bash-zsh-sh
+#Convierte  el path relativo a absoluto
 moogleDirectory=`realpath $moogleDirectory`
 
 #Directorio desde donde se llamo al script originalmente
@@ -87,6 +90,8 @@ originalDirectory=$PWD
 # El codigo "$#" devuelve la cantidad de argumentos que se le pasaron al script
 # El codigo "$1" devuelve el primer argumento
 # El codigo "$2" devuelve el segundo argumento
+
+#FIN VARIABLES
 
 # cantidadDeArgumentos < 1 || cantidadDeArgumentos > 2
 if [[ ($# -lt 1) || ($# -gt 2) ]]
