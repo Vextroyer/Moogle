@@ -98,63 +98,12 @@ moogleDirectory=`realpath $moogleDirectory`
 #Directorio desde donde se llamo al script originalmente
 originalDirectory=$PWD
 
-# El codigo "$#" devuelve la cantidad de argumentos que se le pasaron al script
-# El codigo "$1" devuelve el primer argumento
-# El codigo "$2" devuelve el segundo argumento
-
 #FIN VARIABLES
 
 #INICIO SCRIPT
 
-Rutas
-
-# cantidadDeArgumentos < 1 || cantidadDeArgumentos > 2
-if [[ ($# -lt 1) || ($# -gt 2) ]]
-then
-    Help;
-    #Termina la ejecucion del script, codigo argumento invalido
-    exit 128
-fi
-
-#A partir de esta linea el programa tiene 1 o 2 argumentos
-if [[ $# -eq 1 ]]
-then
-    #echo "Tiene 1";
-    case $1 in
-        run)
-            Run
-        ;;
-        show_report)
-            echo Report
-        ;;
-        show_slides)
-            echo Slides
-        ;;
-        clean)
-            echo Clean
-        ;;
-        help)
-            Help
-        ;;
-        *)
-            Help
-            exit 128
-        ;;
-    esac
-else
-    #echo "Tiene 2";
-    case $1 in
-        show_report)
-            echo Show_report
-        ;;
-        show_slides)
-            echo Show_slides
-        ;;
-        *)
-            Help
-            exit 128
-        ;;
-    esac
-fi
+# El codigo "$#" devuelve la cantidad de argumentos que se le pasaron al script
+# El codigo "$1" devuelve el primer argumento
+# El codigo "$2" devuelve el segundo argumento
 
 #FIN SCRIPT
