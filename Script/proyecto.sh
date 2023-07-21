@@ -7,9 +7,10 @@
 #script)
 function Rutas(){
     echo "Rutas importantes"
-    echo "Ruta de llamada       $originalDirectory"
-    echo "Ruta al script        $scriptDirectory"
-    echo "Ruta al moogle        $moogleDirectory"
+    echo "Ruta de llamada               $originalDirectory"
+    echo "Ruta al script                $scriptDirectory"
+    echo "Ruta al moogle                $moogleDirectory"
+    echo "Ruta a MoogleServer.csproj    $projectFile"
 }
 
 function Help(){
@@ -117,6 +118,9 @@ moogleDirectory="$scriptDirectory/.."
 #Ver, https://stackoverflow.com/questions/3915040/how-to-obtain-the-absolute-path-of-a-file-via-shell-bash-zsh-sh
 #Convierte  el path relativo a absoluto
 moogleDirectory=`realpath $moogleDirectory`
+
+#Archivo que contiene el proyecto a compilar y ejecutar por dotnet
+projectFile="$moogleDirectory/MoogleServer/MoogleServer.csproj"
 
 #Directorio desde donde se llamo al script originalmente
 originalDirectory=$PWD
