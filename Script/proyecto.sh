@@ -144,6 +144,10 @@ case $1 in
     "run")
         Run
     ;;
+    
+    "rutas")
+        Rutas
+    ;;
 
     "troubleshoot")
         Troubleshoot
